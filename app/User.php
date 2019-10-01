@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -16,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','no_hp','id_location','id_leader','id_position'
     ];
 
     /**
@@ -36,4 +37,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    public static function allJoin(){
+        return $user = DB::table('users')
+            ->leftJoin('positions', 'users.id_position', '=', 'positions.id_position')
+            ->leftJoin('locations','users.id_location', '=', 'locations.id_location')
+            // ->select('users.*', 'contacts.phone', 'orders.price')
+            ->get();
+    }
 }

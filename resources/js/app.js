@@ -8,6 +8,58 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import moment from 'moment';
+
+import VueRouter from 'vue-router'
+import { Form, HasError, AlertError } from 'vform';
+
+import swal from 'sweetalert2'
+window.swal = swal;
+
+const toast = swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 5000
+})
+window.toast = toast;
+
+window.Form = Form;
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
+
+
+Vue.use(VueRouter)
+import VueProgressBar from 'vue-progressbar'
+Vue.use(VueProgressBar, {
+    color: 'rgb(143, 255, 199)',
+    failedColor: 'red',
+    height: '5px'
+  })
+
+let routes = [
+    { path: '/dashboard', component: require('./components/Dashboard.vue').default },
+    { path: '/profile', component: require('./components/Profile.vue').default },
+    { path: '/users', component: require('./components/Users.vue').default },
+    { path: '/jabatan', component: require('./components/Jabatan.vue').default },
+    { path: '/lokasi', component: require('./components/Location.vue').default },
+  ]
+
+  const router = new VueRouter({
+    mode: 'history',
+    routes // short for `routes: routes`
+  })
+
+
+Vue.filter('upText',function( text){
+    return text.toUpperCase();
+});
+
+Vue.filter('tgl_indo',function(created){
+    return moment(created).format('LL');
+})
+
+window.Fire = new Vue();
 
 /**
  * The following block of code may be used to automatically register your
@@ -29,5 +81,6 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    router
 });
