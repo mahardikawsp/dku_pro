@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Location;
+use App\Leader;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class LocationController extends Controller
+class LeaderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class LocationController extends Controller
      */
     public function index()
     {
-        return Location::all();
+        return Leader::allJoin();
     }
 
     /**
@@ -37,20 +37,22 @@ class LocationController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'location' => 'required|string|max:50',
+            'type'          => 'required|string|max:50',
+            'id_employee'   => 'required'
         ]);
-        return Location::create([
-            'location' => $request['location'],
+        return Leader::create([
+            'type'        => $request['type'],
+            'id_employee' => $request['id_employee']
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Location  $location
+     * @param  \App\Leader  $leader
      * @return \Illuminate\Http\Response
      */
-    public function show(Location $location)
+    public function show(Leader $leader)
     {
         //
     }
@@ -58,10 +60,10 @@ class LocationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Location  $location
+     * @param  \App\Leader  $leader
      * @return \Illuminate\Http\Response
      */
-    public function edit(Location $location)
+    public function edit(Leader $leader)
     {
         //
     }
@@ -70,27 +72,28 @@ class LocationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Location  $location
+     * @param  \App\Leader  $leader
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'location'        => 'required|string|max:50',
+            'type'        => 'required|string|max:50',
+            'id_employee' => 'required'
         ]);
-        $location = Location::where('id_location', '=', $id)->update($request->all());
+        $leader = Leader::where('id_leader', '=', $id)->update($request->all());
         return ['message' => 'Update berhasil'];
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Location  $location
+     * @param  \App\Leader  $leader
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Leader $leader)
     {
-        $location = Location::where('id_location', '=', $id)->delete();
+        $leader = Leader::where('id_leader', '=', $id)->delete();
         return ['message' => 'terhapus'];
     }
 }

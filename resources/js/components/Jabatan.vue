@@ -1,10 +1,27 @@
 <template>
     <div class="container">
-        <div class="row mt-5">
+      <!-- start content header -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2" style="m">
+          <div class="col-sm-6">
+            <h1>Data Jabatan</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Data Jabatan</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- end content -->
+        <div class="row">
             <div class="col-md-12">
                 <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Data Jabatan <button class="btn btn-success" @click="newModal" >Tambah Baru  <i class="fas fa-user-plus fa-fw"></i></button></h3>
+                 <button class="btn btn-success" @click="newModal" >Tambah Baru  <i class="fas fa-plus fa-fw"></i></button>
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
                     <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
@@ -29,7 +46,7 @@
                       <td>{{ position.position }}</td>
                       <td>
                           <a href="#" @click="editModal(position)">
-                              <span class="badge bg-info">
+                              <span class="badge bg-primary">
                                 Edit
                                  <i class="fas fa-edit"> </i>
                               </span>

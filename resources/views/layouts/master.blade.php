@@ -78,7 +78,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fa fa-cog"></i>
               <p>
-               Manajemen
+               Master Data
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -91,14 +91,26 @@
               </li>
               <li class="nav-item">
                 <router-link to="/jabatan" class="nav-link">
-                  <i class="fas fa-user nav-icon"></i>
+                  <i class="fas fa-user-tag nav-icon"></i>
                   <p>Jabatan</p>
                 </a>
               </li>
               <li class="nav-item">
                 <router-link to="/lokasi" class="nav-link">
-                  <i class="fas fa-user nav-icon"></i>
+                  <i class="fas fa-map-marked nav-icon"></i>
                   <p>Lokasi</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <router-link to="/leader" class="nav-link">
+                  <i class="fas fa-user-shield nav-icon"></i>
+                  <p>Leader</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <router-link to="/leader" class="nav-link">
+                  <i class="fas fa-star-half-alt nav-icon"></i>
+                  <p>Status</p>
                 </a>
               </li>
             </ul>
@@ -136,14 +148,16 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-
+  
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <!-- Main row -->
+        <div class="row">
         <!-- Vue Start Here -->
         <router-view></router-view>
         <vue-progress-bar></vue-progress-bar>
+        </div>
         </div>
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->

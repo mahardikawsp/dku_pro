@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Location;
+use App\Status;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class LocationController extends Controller
+class StatusController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class LocationController extends Controller
      */
     public function index()
     {
-        return Location::all();
+        //
     }
 
     /**
@@ -36,21 +36,16 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'location' => 'required|string|max:50',
-        ]);
-        return Location::create([
-            'location' => $request['location'],
-        ]);
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Location  $location
+     * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function show(Location $location)
+    public function show(Status $status)
     {
         //
     }
@@ -58,10 +53,10 @@ class LocationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Location  $location
+     * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function edit(Location $location)
+    public function edit(Status $status)
     {
         //
     }
@@ -70,27 +65,22 @@ class LocationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Location  $location
+     * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Status $status)
     {
-        $this->validate($request,[
-            'location'        => 'required|string|max:50',
-        ]);
-        $location = Location::where('id_location', '=', $id)->update($request->all());
-        return ['message' => 'Update berhasil'];
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Location  $location
+     * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Status $status)
     {
-        $location = Location::where('id_location', '=', $id)->delete();
-        return ['message' => 'terhapus'];
+        //
     }
 }

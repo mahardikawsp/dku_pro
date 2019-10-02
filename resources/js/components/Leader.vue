@@ -1,16 +1,16 @@
 <template>
     <div class="container">
-        <!-- start content header -->
+      <!-- start content header -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2" style="">
           <div class="col-sm-6">
-            <h1>Data Lokasi</h1>
+            <h1>Data Leader</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Data Lokasi</li>
+              <li class="breadcrumb-item active">Data Leader</li>
             </ol>
           </div>
         </div>
@@ -37,21 +37,25 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>Lokasi</th>
+                      <th>ID</th>
+                      <th>Tipe</th>
+                      <th>Leader</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="location in locations" :key="location.id">
-                      <td>{{ location.location }}</td>
+                    <tr v-for="leader in leaders" :key="leader.id">
+                      <td> {{ leader.id_leader }}</td>
+                      <td>{{ leader.type }}</td>
+                      <td>{{ leader.name }}</td>
                       <td>
-                          <a href="#" @click="editModal(location)">
+                          <a href="#" @click="editModal(leader)">
                               <span class="badge bg-primary">
                                 Edit
                                  <i class="fas fa-edit"> </i>
                               </span>
                           </a>
-                          <a href="#" @click="deleteLocation(location.id_location)">
+                          <a href="#" @click="deleteLeader(leader.id_leader)">
                               <span class="badge bg-danger">
                                 Hapus <i class="fas fa-trash"></i>
                               </span>
@@ -78,13 +82,23 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form @submit.prevent="editmode ? updateLocation() : createLocation()">
+            <form @submit.prevent="editmode ? updateLeader() : createLeader()">
             <div class="modal-body">
                     <div class="form-group">
-                    <label>Lokasi</label>
-                    <input v-model="form.location" type="text" name="location" placeholder="Lokasi"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('location') }">
-                    <has-error :form="form" field="location"></has-error>
+                    <label>Tipe</label>
+                    <input v-model="form.type" type="text" name="type" placeholder="Contoh : SPV Sales, BM"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
+                    <has-error :form="form" field="type"></has-error>
+                    </div>
+            <div class="form-group">
+                    <label>Nama</label>
+                        <select name="id_employee" id="id_employee" v-model="form.id_employee" class="form-control" :class="{'is-invalid': form.errors.has('id_employee')}">
+                            <option value="">Pilih Karyawan</option>
+                           <option v-for="user in users" :value="user.id" :key="user.value"> 
+                               {{ user.name }}
+                               </option>
+                        </select>
+                        <has-error :form="form" field="id_employee"></has-error>
                     </div>
             </div>
             <div class="modal-footer">
@@ -105,17 +119,19 @@
         data(){
             return {
                 editmode : false, //for modal
-                locations : {},
+                leaders : {},
+                users   : {},
                 form: new Form({
-                        id_location     : '',
-                        location        : '',
+                        id_leader   : '',
+                        type        : '',
+                        id_employee : '',
                 })
             }
         },
         methods : {
-           updateLocation(){
+            updateLeader(){
               this.$Progress.start();
-              this.form.put('api/location/'+this.form.id_location)
+              this.form.put('api/leader/'+this.form.id_leader)
               .then(() => {
                   //success
                   $('#addModal').modal('hide');
@@ -136,19 +152,24 @@
               this.form.reset();
               $('#addModal').modal('show');
             },
-            editModal(location){
+            loadUsers(){
+                this.$Progress.start();
+                axios.get('api/user').then(response => this.users = response.data)
+                this.$Progress.finish();
+            },
+            editModal(leader){
               this.editmode = true;
               this.form.reset();
               $('#addModal').modal('show');
-              this.form.fill(location);
+              this.form.fill(leader);
             },
-            loadLocations(){
-                this.$Progress.start()
-                axios.get('api/location').then(response => this.locations = response.data)
-                this.$Progress.finish()
+            loadleaders(){
+                this.$Progress.start();
+                axios.get('api/leader').then(response => this.leaders = response.data)
+                this.$Progress.finish();
             },
-            deleteLocation(id){
-               swal.fire({
+            deleteLeader(id){
+                swal.fire({
                   title: 'Yakin data dihapus?',
                   text: "Data tidak akan hialng",
                   type: 'warning',
@@ -159,7 +180,7 @@
                 }).then((result) => {
                   //request server
                   if (result.value) {
-                  this.form.delete('api/location/'+id)
+                  this.form.delete('api/leader/'+id)
                   .then(() => {
                     swal.fire(
                       'Deleted!',
@@ -178,23 +199,29 @@
                   }
                 })
             },
-            createLocation(){ //IF USER KLIK BUTTON
+            createLeader(){ //IF USER KLIK BUTTON
                 this.$Progress.start()
-                this.form.post('api/location');
-                Fire.$emit('afterCreate'); //refresh if any change from server
-                $('#addModal').modal('hide');
-                toast.fire({
+                this.form.post('api/leader')
+                .then(() => {
+                  Fire.$emit('afterCreate'); //refresh if any change from server
+                  $('#addModal').modal('hide');
+                  toast.fire({
                      type: 'success',
                      title: 'Data Berhasil Ditambahkan'
+                  })
+                  this.$Progress.finish()
                 })
-                this.$Progress.finish()
+                .catch(() => {
+                })
             }
         },
         created() {
-            this.loadLocations();
+            this.loadUsers();
+            this.loadleaders();
             Fire.$on('afterCreate',() => {
-              this.loadLocations();
+              this.loadleaders();
             });
+            // setInterval(() => this.loadleaders(),3000);
         }
     }
 </script>

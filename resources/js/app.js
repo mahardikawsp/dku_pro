@@ -43,6 +43,7 @@ let routes = [
     { path: '/users', component: require('./components/Users.vue').default },
     { path: '/jabatan', component: require('./components/Jabatan.vue').default },
     { path: '/lokasi', component: require('./components/Location.vue').default },
+    { path: '/leader', component: require('./components/Leader.vue').default }
   ]
 
   const router = new VueRouter({

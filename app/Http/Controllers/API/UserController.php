@@ -34,7 +34,7 @@ class UserController extends Controller
             'no_hp'         => 'required|string|min:11',
             'id_location'   => 'required',
             'id_position'   => 'required',
-            'status'        => 'required',
+            'tipe'        => 'required',
         ]);
         return User::create([
             'name'        => $request['name'],
@@ -44,7 +44,7 @@ class UserController extends Controller
             'id_location' => $request['id_location'],
             'id_leader'   => $request['id_leader'],
             'id_position' => $request['id_position'],
-            'status'      => $request['status']
+            'tipe'      => $request['tipe']
         ]);
     }
 
@@ -68,7 +68,25 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $this->validate($request,[
+            'name'          => 'required|string|max:191',
+            'email'         => 'required|string|email|max:191|unique:users,email,'.$user->id,
+            'password'      => 'sometimes|string|min:6'
+        ]);
+
+        $user->update([
+            'name'        => $request['name'],
+            'email'       => $request['email'],
+            'password'    => Hash::make($request['password']),
+            'no_hp'       => $request['no_hp'],
+            'id_location' => $request['id_location'],
+            'id_leader'   => $request['id_leader'],
+            'id_position' => $request['id_position'],
+            'tipe'      => $request['tipe']
+        ]);
+        return ['message' => 'Update berhasil'];
     }
 
     /**

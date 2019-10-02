@@ -1,10 +1,27 @@
 <template>
     <div class="container">
-        <div class="row mt-5">
+    <!-- start content header -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2" style="">
+          <div class="col-sm-6">
+            <h1>Data Karyawan</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Data Karyawan</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- end content -->
+        <div class="row">
             <div class="col-md-12">
                 <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Data Karyawan <button class="btn btn-success" data-toggle="modal" data-target="#addModal" >Tambah Baru  <i class="fas fa-user-plus fa-fw"></i></button></h3>
+                <button class="btn btn-success" @click="newModal" >Tambah Baru  <i class="fas fa-user-plus fa-fw"></i></button>
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
                     <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
@@ -38,16 +55,16 @@
                       <td>{{ user.position }}</td>
                       <td>{{ user.location }}</td>
                       <td>{{ user.created_at | tgl_indo }}</td>
-                      <td><span class="tag tag-success">{{ user.status | upText }}</span></td>
+                      <td><span class="tag tag-success">{{ user.tipe | upText }}</span></td>
                       <td>
-                          <a href="">
-                              <span class="badge bg-info">
-                          Edit<i class="fa fa-pin"> </i>
+                          <a href="#" @click="editModal(user)">
+                              <span class="badge bg-primary">
+                          Edit  <i class="fa fa-edit"> </i>
                               </span>
                           </a>
                           <a href="#" @click="deleteUser(user.id)">
                               <span class="badge bg-danger">
-                             Hapus<i class="fa fa-pin"></i>
+                             Hapus  <i class="fa fa-trash"> </i>
                               </span>
                           </a>
                       </td>
@@ -66,12 +83,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" v-show = "!editmode" id="exampleModalLabel">Tambah Data</h5>
+                <h5 class="modal-title" v-show = "editmode" id="exampleModalLabel">Update Data</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form @submit.prevent="createUser">
+            <form @submit.prevent="editmode ? updateUser() : createUser()">
             <div class="modal-body">
                     <div class="form-group">
                     <label>Email</label>
@@ -125,24 +143,29 @@
 
                     <div class="form-group">
                     <label>Leader</label>
-                    <input v-model="form.id_leader" type="text" name="id_leader"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('id_leader') }">
+                    <select name="id_leader" id="id_leader" v-model="form.id_leader" class="form-control" :class="{'is-invalid': form.errors.has('id_leader')}">
+                            <option value="">Pilih Leader</option>
+                           <option v-for="leader in leaders" :value="leader.id_leader" :key="leader.value"> 
+                               {{ leader.name }} || {{ leader.type }}
+                               </option>
+                        </select>
                     <has-error :form="form" field="id_leader"></has-error>
                     </div>
 
                     <div class="form-group">
                     <label>Status</label>
-                        <select name="status" id="status" v-model="form.status" class="form-control" :class="{'is-invalid': form.errors.has('status')}">
+                        <select name="tipe" id="tipe" v-model="form.tipe" class="form-control" :class="{'is-invalid': form.errors.has('tipe')}">
                             <option value="">Status</option>
                             <option value="Aktif">Aktif</option>
                             <option value="Nonaktif">Nonaktif</option>
                         </select>
-                        <has-error :form="form" field="status"></has-error>
+                        <has-error :form="form" field="tipe"></has-error>
                     </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button v-show = "editmode" type="submit" class="btn btn-success">Update </button>
+                <button v-show = "!editmode" type="submit" class="btn btn-primary">Simpan</button>
             </div>
             </form>
             </div>
@@ -156,10 +179,13 @@
     export default {
         data(){
             return {
-                users : {},
+                editmode  : false,
+                users     : {},
                 positions : {},
                 locations : {},
+                leaders    : {},
                 form: new Form({
+                        id          : '',
                         name        : '',
                         email       : '',
                         password    : '',
@@ -168,11 +194,40 @@
                         id_position : '',
                         photo       : '',
                         id_leader   : '',
-                        status      : '',
+                        tipe      : '',
                 })
             }
         },
         methods : {
+            updateUser(){
+              this.$Progress.start();
+              this.form.put('api/user/'+this.form.id)
+              .then(() => {
+                  //success
+                  $('#addModal').modal('hide');
+                  swal.fire(
+                      'Perbarui Data!',
+                      'Berhasil Diperbarui',
+                      'success'
+                    )
+                    this.$Progress.finish();
+                    Fire.$emit('afterCreate');
+              })
+              .catch(() => {
+              this.$Progress.fail();
+              });
+            },
+            newModal(){
+              this.editmode = false;
+              this.form.reset();
+              $('#addModal').modal('show');
+            },
+            editModal(position){
+              this.editmode = true;
+              this.form.reset();
+              $('#addModal').modal('show');
+              this.form.fill(position);
+            },
             loadUsers(){
                 this.$Progress.start();
                 axios.get('api/user').then(response => this.users = response.data)
@@ -180,6 +235,9 @@
             },
             loadPosition(){
                 axios.get('api/position').then(response => this.positions = response.data)
+            },
+            loadLeader(){
+                axios.get('api/leader').then(response => this.leaders = response.data)
             },
             loadLocation(){
                 axios.get('api/location').then(response => this.locations = response.data)
@@ -231,11 +289,12 @@
             this.loadUsers();
             this.loadPosition();
             this.loadLocation();
+            this.loadLeader();
             Fire.$on('afterCreate',() => {
               this.loadUsers();
             });
-            setInterval(() => this.loadPosition(),3000);
-            setInterval(() => this.loadLocation(),3000);
+            // setInterval(() => this.loadPosition(),3000);
+            // setInterval(() => this.loadLocation(),3000);
         }
     }
 </script>
