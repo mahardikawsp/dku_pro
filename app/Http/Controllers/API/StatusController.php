@@ -15,7 +15,7 @@ class StatusController extends Controller
      */
     public function index()
     {
-        //
+        return Status::all();
     }
 
     /**
@@ -36,7 +36,14 @@ class StatusController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'type'    => 'required|string|max:50',
+            'skor'    => 'required'
+        ]);
+        return Status::create([
+            'type'    => $request['type'],
+            'skor'    => $request['skor']
+        ]);
     }
 
     /**
@@ -68,9 +75,14 @@ class StatusController extends Controller
      * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Status $status)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'type'    => 'required|string|max:50',
+            'skor'    => 'required'
+        ]);
+        $status = Status::where('id_status', '=', $id)->update($request->all());
+        return ['message' => 'Update berhasil'];
     }
 
     /**
@@ -79,8 +91,9 @@ class StatusController extends Controller
      * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Status $status)
+    public function destroy(Status $id)
     {
-        //
+        $status = Status::where('id_status', '=', $id)->delete();
+        return ['message' => 'terhapus'];
     }
 }

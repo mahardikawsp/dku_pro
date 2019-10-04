@@ -19,5 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResources(['user'    => 'API\UserController',
                     'position' => 'API\PositionController',
-                    'leader'  => 'API\LeaderController',
-                    'location' => 'API\LocationController']);
+                    'leader'   => 'API\LeaderController',
+                    'location' => 'API\LocationController',
+                    'status'   => 'API\StatusController']);

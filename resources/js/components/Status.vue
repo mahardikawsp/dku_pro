@@ -5,12 +5,12 @@
       <div class="container-fluid">
         <div class="row mb-2" style="">
           <div class="col-sm-6">
-            <h1>Data Lokasi</h1>
+            <h1>Data Status</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Data Lokasi</li>
+              <li class="breadcrumb-item active">Data Status</li>
             </ol>
           </div>
         </div>
@@ -37,21 +37,23 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>Lokasi</th>
+                      <th>Tipe</th>
+                      <th>Skor</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="location in locations" :key="location.id">
-                      <td>{{ location.location }}</td>
+                    <tr v-for="status in status" :key="status.id">
+                      <td>{{ status.type }}</td>
+                      <td>{{ status.skor }}</td>
                       <td>
-                          <a href="#" @click="editModal(location)">
+                          <a href="#" @click="editModal(status)">
                               <span class="badge bg-primary">
                                 Edit
                                  <i class="fas fa-edit"> </i>
                               </span>
                           </a>
-                          <a href="#" @click="deleteLocation(location.id_location)">
+                          <a href="#" @click="deleteLocation(status.id_status)">
                               <span class="badge bg-danger">
                                 Hapus <i class="fas fa-trash"></i>
                               </span>
@@ -78,13 +80,19 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form @submit.prevent="editmode ? updateLocation() : createLocation()">
+            <form @submit.prevent="editmode ? updateStatus() : createStatus()">
             <div class="modal-body">
                     <div class="form-group">
-                    <label>Lokasi</label>
-                    <input v-model="form.location" type="text" name="location" placeholder="Lokasi"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('location') }">
-                    <has-error :form="form" field="location"></has-error>
+                    <label>Tipe</label>
+                    <input v-model="form.type" type="text" name="type" placeholder="Contoh : Terlambat"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
+                    <has-error :form="form" field="type"></has-error>
+                    </div>
+                    <div class="form-group">
+                    <label>Skor</label>
+                    <input v-model="form.skor" skor="text" name="skor" placeholder="Contoh : 3%"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('skor') }">
+                    <has-error :form="form" field="skor"></has-error>
                     </div>
             </div>
             <div class="modal-footer">
@@ -105,17 +113,18 @@
         data(){
             return {
                 editmode : false, //for modal
-                locations : {},
+                status : {},
                 form: new Form({
-                        id_location     : '',
-                        location        : '',
+                        id_status  : '',
+                        type       : '',
+                        skor       : '',
                 })
             }
         },
         methods : {
-           updateLocation(){
+           updateStatus(){
               this.$Progress.start();
-              this.form.put('api/location/'+this.form.id_location)
+              this.form.put('api/status/'+this.form.id_status)
               .then(() => {
                   //success
                   $('#addModal').modal('hide');
@@ -136,18 +145,18 @@
               this.form.reset();
               $('#addModal').modal('show');
             },
-            editModal(location){
+            editModal(status){
               this.editmode = true;
               this.form.reset();
               $('#addModal').modal('show');
-              this.form.fill(location);
+              this.form.fill(status);
             },
-            loadLocations(){
+            loadStatus(){
                 this.$Progress.start()
-                axios.get('api/location').then(response => this.locations = response.data)
+                axios.get('api/status').then(response => this.status = response.data)
                 this.$Progress.finish()
             },
-            deleteLocation(id){
+            deleteStatus(id){
                swal.fire({
                   title: 'Yakin data dihapus?',
                   text: "Data tidak akan hialng",
@@ -159,7 +168,7 @@
                 }).then((result) => {
                   //request server
                   if (result.value) {
-                  this.form.delete('api/location/'+id)
+                  this.form.delete('api/status/'+id)
                   .then(() => {
                     swal.fire(
                       'Deleted!',
@@ -178,9 +187,9 @@
                   }
                 })
             },
-            createLocation(){ //IF USER KLIK BUTTON
+            createStatus(){ //IF USER KLIK BUTTON
                 this.$Progress.start()
-                this.form.post('api/location');
+                this.form.post('api/status');
                 Fire.$emit('afterCreate'); //refresh if any change from server
                 $('#addModal').modal('hide');
                 toast.fire({
@@ -191,9 +200,9 @@
             }
         },
         created() {
-            this.loadLocations();
+            this.loadStatus();
             Fire.$on('afterCreate',() => {
-              this.loadLocations();
+              this.loadStatus();
             });
         }
     }
