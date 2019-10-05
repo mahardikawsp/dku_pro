@@ -8,6 +8,6 @@ class Position extends Model
 {
     public $timestamps = false;
     protected $fillable = [
-        'position'
+        'position','latitude','longitude'
     ];
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <!-- start content header -->
+  <!-- start content header -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2" style="">
@@ -38,12 +38,16 @@
                   <thead>
                     <tr>
                       <th>Lokasi</th>
+                      <th>Latitude</th>
+                      <th>Longitude</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="location in locations" :key="location.id">
                       <td>{{ location.location }}</td>
+                      <td>{{ location.latitude }}</td>
+                      <td>{{ location.longitude }}</td>
                       <td>
                           <a href="#" @click="editModal(location)">
                               <span class="badge bg-primary">
@@ -87,6 +91,22 @@
                     <has-error :form="form" field="location"></has-error>
                     </div>
             </div>
+            <div class="modal-body">
+                    <div class="form-group">
+                    <label>Latitude</label>
+                    <input v-model="form.latitude" type="text" name="latitude" placeholder="Latitude"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('latitude') }">
+                    <has-error :form="form" field="latitude"></has-error>
+                    </div>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group">
+                    <label>Longitude</label>
+                    <input v-model="form.longitude" type="text" name="longitude" placeholder="Longitude"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('longitude') }">
+                    <has-error :form="form" field="longitude"></has-error>
+                    </div>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                 <button v-show = "editmode" type="submit" class="btn btn-success">Update </button>
@@ -107,8 +127,10 @@
                 editmode : false, //for modal
                 locations : {},
                 form: new Form({
-                        id_location     : '',
-                        location        : '',
+                        id_location  : '',
+                        location     : '',
+                        latitude     : '',
+                        longitude    : '', 
                 })
             }
         },
