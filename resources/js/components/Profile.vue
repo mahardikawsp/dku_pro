@@ -209,54 +209,102 @@
 
                   <div class="tab-pane active" id="settings">
                     <form class="form-horizontal">
-                      <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputName" placeholder="Name">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputName2" placeholder="Name">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-                        <div class="col-sm-10">
-                          <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputSkills" class="col-sm-2 col-form-label">Foto</label>
-                        <div class="col-sm-10">
-                          <input type="file" class="form-control" id="foto" placeholder="foto">
-                        </div>
-                      </div>
+                                          <div class="form-group row">
+                    <label class="col-sm-2">Email</label>
+                    <div class="col-sm-10">
+                    <input v-model="form.email" type="email" name="email" placeholder="Email"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                    <has-error :form="form" field="email"></has-error>
+                    </div>
+	                </div>
+                    
+                    <div class="form-group row">
+                     <label class="col-sm-2">Nama</label>
+                     <div class="col-sm-10">
+                    <input v-model="form.name" type="text" name="name" placeholder="Nama"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
+                    <has-error :form="form" field="name"></has-error>
+                    </div>
+                    </div>
+
+                    <div class="form-group row">
+                     <label class="col-sm-2">Password</label>
+                     <div class="col-sm-10">
+                    <input v-model="form.password" type="password" name="password" placeholder="Password"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
+                    <has-error :form="form" field="password"></has-error>
+                    </div>
+                    </div>
+
+                    <div class="form-group row">
+                     <label class="col-sm-2">Nomor HP</label>
+                     <div class="col-sm-10">
+                    <input v-model="form.no_hp" type="text" name="no_hp" placeholder="Nomor HP"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('no_hp') }">
+                    <has-error :form="form" field="no_hp"></has-error>
+                    </div>
+                    </div>
+
+                    <div class="form-group row">
+                     <label class="col-sm-2">Lokasi</label>
+                     <div class="col-sm-10">
+                        <select name="id_location" id="id_location" v-model="form.id_location" class="form-control" :class="{'is-invalid': form.errors.has('id_location')}">
+                            <option value="">Pilih Lokasi</option>
+                           <option v-for="location in locations" :value="location.id_location" :key="location.value"> 
+                               {{ location.location }}
+                               </option>
+                        </select>
+                        <has-error :form="form" field="id_location"></has-error>
+                    </div>
+                    </div>
+
+                    <div class="form-group row">
+                     <label class="col-sm-2">Jabatan</label>
+                     <div class="col-sm-10">
+                    <select name="id_position" id="id_position" v-model="form.id_position" class="form-control" :class="{'is-invalid': form.errors.has('id_position')}">
+                            <option value="">Pilih Jabatan</option>
+                           <option v-for="position in positions" :value="position.id_position" :key="position.value"> 
+                               {{ position.position }}
+                               </option>
+                        </select>
+                    <has-error :form="form" field="id_position"></has-error>
+                    </div>
+                    </div>
+
+                    <div class="form-group row">
+                     <label class="col-sm-2">Leader</label>
+                     <div class="col-sm-10">
+                    <select name="id_leader" id="id_leader" v-model="form.id_leader" class="form-control" :class="{'is-invalid': form.errors.has('id_leader')}">
+                            <option value="">Pilih Leader</option>
+                           <option v-for="leader in leaders" :value="leader.id_leader" :key="leader.value"> 
+                               {{ leader.name }} || {{ leader.type }}
+                               </option>
+                        </select>
+                    <has-error :form="form" field="id_leader"></has-error>
+                    </div>
+                    </div>
+
+                    <div class="form-group row">
+                     <label class="col-sm-2">Status</label>
+                     <div class="col-sm-10">
+                        <select name="tipe" id="tipe" v-model="form.tipe" class="form-control" :class="{'is-invalid': form.errors.has('tipe')}">
+                            <option value="">Status</option>
+                            <option value="Aktif">Aktif</option>
+                            <option value="Nonaktif">Nonaktif</option>
+                        </select>
+                        <has-error :form="form" field="tipe"></has-error>
+                    </div>
+                    </div>
+
+                    <div class="form-group row">
+                     <label class="col-sm-2">Foto</label>
+                     <div class="col-sm-10">
+                        <input type="file" @change="updateProfile" name='photo' class='form-input'>
+                    </div>
+                    </div>
                       <div class="form-group row">
                         <div class="offset-sm-2 col-sm-10">
-                          <div class="checkbox">
-                            <label>
-                              <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Submit</button>
+                          <button @click.prevent = "updateInfo" type="submit" class="btn btn-danger">Submit</button>
                         </div>
                       </div>
                     </form>
@@ -278,8 +326,73 @@
 
 <script>
     export default {
+        data(){
+            return {
+                positions : {},
+                locations : {},
+                leaders    : {},
+                form: new Form({
+                        id          : '',
+                        name        : '',
+                        email       : '',
+                        password    : '',
+                        no_hp       : '',
+                        id_location : '',
+                        id_position : '',
+                        photo       : '',
+                        id_leader   : '',
+                        tipe      : '',
+                })
+            }
+        },
         mounted() {
             console.log('Component mounted.')
+        },
+        methods : {
+        updateInfo(){
+            this.$Progress.start();
+            this.form.put('api/profile')
+            .then(() => {
+              this.$Progress.finish();
+            })
+            .catch(() => {
+              this.$Progress.fail();
+            });
+        },
+        loadPosition(){
+            axios.get('api/position').then(response => this.positions = response.data)
+            },
+        loadLeader(){
+            axios.get('api/leader').then(response => this.leaders = response.data)
+            },
+        loadLocation(){
+            axios.get('api/location').then(response => this.locations = response.data)
+            },
+        updateProfile(e){
+            // console.log('diupload');
+            let file = e.target.files[0];
+            let reader = new FileReader();
+            if(file['size'] < 100000){
+                  reader.onloadend = (file) => {
+                    // console.log('RESULT',reader.result)
+                  this.form.photo = reader.result;
+                  }
+                  reader.readAsDataURL(file);
+            } else {
+               swal.fire(
+                      'Gagal!',
+                      'Oops Error.',
+                      'warning'
+                    )
+            }
+        }
+        },
+        created() {
+            axios.get("api/profile").
+            then(({ data}) => (this.form.fill(data)));
+            this.loadPosition();
+            this.loadLocation();
+            this.loadLeader();
         }
     }
 </script>

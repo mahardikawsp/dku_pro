@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image as Image;
 
 class UserController extends Controller
 {
@@ -50,6 +51,47 @@ class UserController extends Controller
             'id_position' => $request['id_position'],
             'tipe'      => $request['tipe']
         ]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function profile()
+    {
+        return auth('api')->user();
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateProfile(Request $request)
+    {
+        $user           = auth('api')->user();
+        
+        $this->validate($request,[
+            'name'          => 'required|string|max:191',
+            'email'         => 'required|string|email|max:191|unique:users,email,'.$user->id,
+            'password'      => 'sometimes|string|min:6'
+        ]);
+
+        $currentPhoto   = $user->photo;
+         if( $request->photo != $currentPhoto ){
+            
+          $name=time().'.'. explode('/', explode(':',substr($request->photo,0,strpos($request->photo,';')))[1])[1];
+          \Image::make($request->photo)->save(public_path('img/profile/').$name);
+            $request->merge(['photo' => $name]);
+          
+
+          //new poto name marege to request form
+        }
+        $user->update($request->all());
+        return ['message' => 'berhasil'];
     }
 
     /**

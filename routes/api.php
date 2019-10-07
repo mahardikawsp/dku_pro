@@ -22,3 +22,6 @@ Route::apiResources(['user'    => 'API\UserController',
                     'leader'   => 'API\LeaderController',
                     'location' => 'API\LocationController',
                     'status'   => 'API\StatusController']);
+                    
+Route::get('profile','API\UserController@profile');
+Route::put('profile','API\UserController@updateProfile');
