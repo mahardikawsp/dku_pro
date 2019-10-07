@@ -230,7 +230,7 @@
                     <div class="form-group row">
                      <label class="col-sm-2">Password</label>
                      <div class="col-sm-10">
-                    <input v-model="form.password" type="password" name="password" placeholder="Password"
+                    <input v-model="form.password" type="password" name="password" placeholder="Kosongkan jika tidak diubah"
                         class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
                     <has-error :form="form" field="password"></has-error>
                     </div>
@@ -372,7 +372,7 @@
             // console.log('diupload');
             let file = e.target.files[0];
             let reader = new FileReader();
-            if(file['size'] < 100000){
+            if(file['size'] < 10000000){
                   reader.onloadend = (file) => {
                     // console.log('RESULT',reader.result)
                   this.form.photo = reader.result;

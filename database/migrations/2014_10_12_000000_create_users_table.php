@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('id_position')->nullable();
             $table->string('id_leader')->nullable();
             $table->string('photo')->default('profile.png');
-            $table->string('tipe');
+            $table->string('tipe')->default('Aktif');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

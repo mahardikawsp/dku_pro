@@ -73,7 +73,7 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $user           = auth('api')->user();
-        
+
         $this->validate($request,[
             'name'          => 'required|string|max:191',
             'email'         => 'required|string|email|max:191|unique:users,email,'.$user->id,
@@ -86,10 +86,12 @@ class UserController extends Controller
           $name=time().'.'. explode('/', explode(':',substr($request->photo,0,strpos($request->photo,';')))[1])[1];
           \Image::make($request->photo)->save(public_path('img/profile/').$name);
             $request->merge(['photo' => $name]);
-          
-
           //new poto name marege to request form
         }
+        if(!empty($request->password)){
+            $request->merge(['password' => Hash::make($request['password'])]);
+        }
+        
         $user->update($request->all());
         return ['message' => 'berhasil'];
     }

@@ -2977,7 +2977,7 @@ __webpack_require__.r(__webpack_exports__);
       var file = e.target.files[0];
       var reader = new FileReader();
 
-      if (file['size'] < 100000) {
+      if (file['size'] < 10000000) {
         reader.onloadend = function (file) {
           // console.log('RESULT',reader.result)
           _this5.form.photo = reader.result;
@@ -63632,7 +63632,7 @@ var render = function() {
                                 attrs: {
                                   type: "password",
                                   name: "password",
-                                  placeholder: "Password"
+                                  placeholder: "Kosongkan jika tidak diubah"
                                 },
                                 domProps: { value: _vm.form.password },
                                 on: {
