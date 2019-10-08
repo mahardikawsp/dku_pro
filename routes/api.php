@@ -25,3 +25,10 @@ Route::apiResources(['user'    => 'API\UserController',
                     
 Route::get('profile','API\UserController@profile');
 Route::put('profile','API\UserController@updateProfile');
+
+Route::post('login', 'API\UserController@login');
+Route::post('register', 'API\UserController@register');
+
+Route::group(['middleware' => 'auth:api'], function(){
+    Route::post('details', 'API\UserController@details');
+});

@@ -32,7 +32,7 @@
             <div class="card card-primary card-outline">
               <div class="card-body box-profile">
                 <div class="text-center">
-                  <img class="profile-user-img img-fluid img-circle" src="../../../public/img/user.jpg" alt="User profile picture">
+                  <img class="profile-user-img img-fluid img-circle" :src="getProfilePhoto()" alt="User profile picture">
                 </div>
 
                 <h3 class="profile-username text-center">Nina Mcintire</h3>
@@ -349,11 +349,25 @@
             console.log('Component mounted.')
         },
         methods : {
+        getProfilePhoto(){
+          let photo = (this.form.photo.length > 200) ? this.form.photo : "img/profile/"+ this.form.photo;
+          return photo;
+          // return "img/profile/"+this.form.photo;
+        },
         updateInfo(){
             this.$Progress.start();
+            if(this.form.password == ''){
+               this.form.password = undefined;
+            }
             this.form.put('api/profile')
             .then(() => {
+              swal.fire(
+                      'Perbarui Data!',
+                      'Berhasil Diperbarui',
+                      'success'
+                    )
               this.$Progress.finish();
+              Fire.$emit('afterCreate');
             })
             .catch(() => {
               this.$Progress.fail();
@@ -388,6 +402,10 @@
         }
         },
         created() {
+            Fire.$on('afterCreate',() => {
+              axios.get("api/profile").
+            then(({ data}) => (this.form.fill(data)));
+            });
             axios.get("api/profile").
             then(({ data}) => (this.form.fill(data)));
             this.loadPosition();

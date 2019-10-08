@@ -7,13 +7,15 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image as Image;
+use Validator;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api');
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -87,11 +89,15 @@ class UserController extends Controller
           \Image::make($request->photo)->save(public_path('img/profile/').$name);
             $request->merge(['photo' => $name]);
           //new poto name marege to request form
+          $userPhoto = public_path('img/profile/').$currentPhoto;
+          if(file_exists($userPhoto)){
+            @unlink($userPhoto); 
+          }
         }
         if(!empty($request->password)){
             $request->merge(['password' => Hash::make($request['password'])]);
         }
-        
+
         $user->update($request->all());
         return ['message' => 'berhasil'];
     }
@@ -147,5 +153,45 @@ class UserController extends Controller
     {
         $user = User::where('id', '=', $id)->delete();
         return ['message' => 'terhapus'];
+    }
+    public $successStatus = 200;
+
+    public function login(){
+        if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
+            $user = Auth::user();
+            $success
+            $success['token'] =  $user->createToken('nApp')->accessToken;
+            return response()->json(['success' => $success], $this->successStatus);
+        }
+        else{
+            return response()->json(['error'=>'Unauthorised'], 401);
+        }
+    }
+
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);            
+        }
+
+        $input = $request->all();
+        $input['password'] = bcrypt($input['password']);
+        $user = User::create($input);
+        $success['token'] =  $user->createToken('nApp')->accessToken;
+        $success['name'] =  $user->name;
+
+        return response()->json(['success'=>$success], $this->successStatus);
+    }
+
+    public function details()
+    {
+        $user = Auth::user();
+        return response()->json(['success' => $user], $this->successStatus);
     }
 }
