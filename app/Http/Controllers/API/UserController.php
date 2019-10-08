@@ -156,37 +156,76 @@ class UserController extends Controller
     }
     public $successStatus = 200;
 
-    public function login(){
-        if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
-            $user = Auth::user();
-            $success
-            $success['token'] =  $user->createToken('nApp')->accessToken;
-            return response()->json(['success' => $success], $this->successStatus);
+    public function login(Request $request){
+        $user = User::where('email', '=', $request->email)->firstOrFail();
+        $status = "error";
+        $message = "";
+        $data = null;
+        $code = 401;
+        $this->validate($request,[
+            'email'     => 'required',
+            'password'  => 'required',
+        ]);
+        if($user){
+            if (Hash::check($request->password, $user->password)) {
+                // generate token
+                $status  = 'success';
+                $message = 'Login sukses';
+                $akses   = $user->type;
+                // tampilkan data user menggunakan method toArray
+                $data = $user->toArray();
+                $code = 200;
+            }else{
+                $message = "Login gagal, password salah";
+            }
+        } else{
+                $message = "Login gagal, username salah";
         }
-        else{
-            return response()->json(['error'=>'Unauthorised'], 401);
-        }
+        return response()->json([
+            'status' => $status,
+            'message' => $message,
+            'akses' => $akses,
+            'data' => $data], $code);
     }
 
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 401);            
-        }
-
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
-        $success['token'] =  $user->createToken('nApp')->accessToken;
-        $success['name'] =  $user->name;
-
-        return response()->json(['success'=>$success], $this->successStatus);
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+            ]);
+           
+            $status = "error";
+            $message = "";
+            $data = null;
+            $code = 400;
+            if ($validator->fails()) {
+            $errors = $validator->errors();
+            $message = $errors;
+            }
+            else{
+            $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            ]);
+            if($user){
+            //Auth::login($user); // hapus bari ini
+            $status = "success";
+            $message = "register successfully";
+            $data = $user->toArray();
+            $code = 200;
+            }
+            else{
+            $message = 'register failed';
+            }
+            }
+            return response()->json([
+            'status' => $status,
+            'message' => $message,
+            'data' => $data
+            ], $code);
     }
 
     public function details()
