@@ -4,12 +4,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Dashboard</h1>
+            <h1 class="m-0 text-dark">Dashboard Absensi</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v1</li>
+              <li class="breadcrumb-item active">Absensi</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -20,56 +20,75 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3>150</h3>
-
-                <p>Karyawan Aktif</p>
-              </div>
-              <div class="icon">
-               <i class="fas fa-user-friends"></i>
-               
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
+          
+          
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-12 col-12">
             <!-- small box -->
-            <div class="small-box bg-success">
+            <div class="small-box bg-info" style="background-color: #343a40 !important;">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                <p>Absen Hari Ini</p>
+                <h3><sup style="font-size: 20px"></sup></h3>
+                <select class="form-control" name="filter" id="filter">
+                <option value="">Filter Tanggal</option>
+                <option value="">Filter Bulan</option>
+                <option value="">Filter Tahun</option>
+                </select>
+                <p></p>
+                <select class="form-control" name="filter" id="filter">
+                <option value="">Filter Tanggall</option>
+                <option value="">Filter Bulan</option>
+                <option value="">Filter Tahun</option>
+              </select>
+               <p></p>
+              <select class="form-control" name="filter" id="filter">
+                <option value="">Filter User</option>
+              </select>
               </div>
-              <div class="icon">
-                <i class="fas fa-user-check"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <!-- ./col -->
-          <div class="col-lg-6 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                <p>Absen Hari Ini</p>
-              </div>
-              <div class="icon">
-                <i class="fas fa-user-check"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              
+              
+              <a href="#" class="small-box-footer">Tampilkan Data <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
         </div>
         <!-- /.row -->
-        
+        <div class="card" style="border: 1px solid #d6d6d6;">
+              <div class="card-header">
+                <!-- <h3 class="card-title">Data Absensi</h3> -->
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body p-0">
+                <table class="table table-condensed">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">No</th>
+                      <th>Tanggal</th>
+                      <th>Karyawan</th>
+                      <th>Absen Masuk</th>
+                      <th>Absen Pulang</th>
+                      <th>Keterangan</th>
+                      <th>Perfomance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1.</td>
+                      <td>08 Oktober 2019</td>
+                      <td>Kanjeng</td>
+                      <td>08.00 WIB</td>
+                      <td>17.00 WIB</td>
+                      <td><span class="badge bg-danger">Ontime</span></td>
+                      <td><div class="progress progress-xs">
+                          <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                        </div>
+                     <span class="badge bg-info">60%</span>
+                     </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
       </div><!-- /.container-fluid -->
     </section>
 

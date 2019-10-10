@@ -9,12 +9,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="user-id" content="{{ Auth::user()->id }}">
   <link rel="stylesheet" href="/css/app.css">
   <link rel="stylesheet" href="/css/all.min.css">
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="/css/adminlte.min.css">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
+<style></style>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper" id="app">
 
@@ -34,16 +36,16 @@
     </ul>
 
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
+    
       <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control form-control-navbar" @keyup ="searchit" v-model = "search" type="search" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
+          <button class="btn btn-navbar" @click="searchit">
             <i class="fas fa-search"></i>
           </button>
         </div>
       </div>
-    </form>
+    
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
@@ -119,7 +121,7 @@
               </p>
             </a>
           </li>
-
+          @can('isAdmin')
          <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fa fa-cog"></i>
@@ -161,7 +163,7 @@
               </li>
             </ul>
           </li>
-          
+          @endcan
           <li class="nav-item">
             <router-link to="/absensi" class="nav-link">
               <i class="nav-icon fas fa-user-check"></i>
@@ -242,6 +244,12 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+@auth
+<script>
+  window.user = @json(auth()->user())
+</script>
+@endauth
 <script src="/js/app.js"></script>
 </body>
 </html>

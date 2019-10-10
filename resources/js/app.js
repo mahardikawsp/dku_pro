@@ -13,6 +13,9 @@ import moment from 'moment';
 import VueRouter from 'vue-router'
 import { Form, HasError, AlertError } from 'vform';
 
+import Gate from "./Gate";
+Vue.prototype.$gate = new Gate(window.user);
+
 import swal from 'sweetalert2'
 window.swal = swal;
 
@@ -28,6 +31,7 @@ window.Form = Form;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 
+Vue.component('pagination', require('laravel-vue-pagination'));
 
 Vue.use(VueRouter)
 import VueProgressBar from 'vue-progressbar'
@@ -46,7 +50,8 @@ let routes = [
     { path: '/leader', component: require('./components/Leader.vue').default },
     { path: '/status', component: require('./components/Status.vue').default },
     { path: '/absensi', component: require('./components/Absent.vue').default },
-    { path: '/dev', component: require('./components/Developer.vue').default }
+    { path: '/dev', component: require('./components/Developer.vue').default },
+    { path: '*', component: require('./components/notFound.vue').default }
   ]
 
   const router = new VueRouter({
@@ -99,7 +104,20 @@ Vue.component(
   require('./components/passport/PersonalAccessTokens.vue').default
 );
 
+Vue.component(
+  'not-found',
+  require('./components/notFound.vue').default
+);
+
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    data : {
+      search : ''
+    },
+    methods : {
+      searchit: _.debounce(() => {
+        Fire.$emit("searching");
+      },1000)
+    }
 });

@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth:api');
-    // }
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -23,6 +23,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        $this->authorize('isAdmin');
         return User::allJoin();
     }
 
@@ -151,86 +152,20 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('isAdmin');
         $user = User::where('id', '=', $id)->delete();
         return ['message' => 'terhapus'];
     }
     public $successStatus = 200;
 
-    public function login(Request $request){
-        $user = User::where('email', '=', $request->email)->firstOrFail();
-        $status = "error";
-        $message = "";
-        $data = null;
-        $code = 401;
-        $this->validate($request,[
-            'email'     => 'required',
-            'password'  => 'required',
-        ]);
-        if($user){
-            if (Hash::check($request->password, $user->password)) {
-                // generate token
-                $status  = 'success';
-                $message = 'Login sukses';
-                $akses   = $user->type;
-                // tampilkan data user menggunakan method toArray
-                $data = $user->toArray();
-                $code = 200;
-            }else{
-                $message = "Login gagal, password salah";
-            }
-        } else{
-                $message = "Login gagal, username salah";
+    public function search(){
+        if($search = \Request::get('q')){
+            $users = User::where(function($query) use ($search){
+                $query->where('name','LIKE', "%$search%")->orWhere('email','LIKE',"%$search%");
+            })->paginate(10);
+        } else {
+            $users = User::latest()->paginate(5);
         }
-        return response()->json([
-            'status' => $status,
-            'message' => $message,
-            'akses' => $akses,
-            'data' => $data], $code);
-    }
-
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            ]);
-           
-            $status = "error";
-            $message = "";
-            $data = null;
-            $code = 400;
-            if ($validator->fails()) {
-            $errors = $validator->errors();
-            $message = $errors;
-            }
-            else{
-            $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            ]);
-            if($user){
-            //Auth::login($user); // hapus bari ini
-            $status = "success";
-            $message = "register successfully";
-            $data = $user->toArray();
-            $code = 200;
-            }
-            else{
-            $message = 'register failed';
-            }
-            }
-            return response()->json([
-            'status' => $status,
-            'message' => $message,
-            'data' => $data
-            ], $code);
-    }
-
-    public function details()
-    {
-        $user = Auth::user();
-        return response()->json(['success' => $user], $this->successStatus);
+        return $users;
     }
 }

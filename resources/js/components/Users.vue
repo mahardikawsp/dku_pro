@@ -1,7 +1,7 @@
 <template>
     <div class="container">
     <!-- start content header -->
-    <section class="content-header">
+    <section class="content-header" v-if="$gate.isAdmin()">
       <div class="container-fluid">
         <div class="row mb-2" style="">
           <div class="col-sm-6">
@@ -17,8 +17,8 @@
       </div><!-- /.container-fluid -->
     </section>
     <!-- end content -->
-        <div class="row">
-            <div class="col-md-12">
+        <div class="row" >
+            <div class="col-md-12" v-if="$gate.isAdmin()">
                 <div class="card">
               <div class="card-header">
                 <button class="btn btn-success" @click="newModal" >Tambah Baru  <i class="fas fa-user-plus fa-fw"></i></button>
@@ -48,7 +48,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="user in users" :key="user.id">
+                    <tr v-for="user in users.data" :key="user.id">
                       <td>{{ user.id }}</td>
                       <td>{{ user.name }}</td>
                       <td>{{ user.no_hp }}</td>
@@ -72,9 +72,17 @@
                   </tbody>
                 </table>
               </div>
+              <div class="card-footer">
+                <pagination :data="users" @pagination-change-page="getResults"></pagination>
+              </div>
               <!-- /.card-body -->
             </div>
             </div>
+        <!--start not found-->
+          <div v-if="!$gate.isAdmin()">
+            <not-found></not-found>
+          </div>
+          <!--end not found -->
         </div>
         <!-- start modal -->
         <!-- Button trigger modal -->
@@ -199,6 +207,12 @@
             }
         },
         methods : {
+          getResults(page = 1){
+              axios.get('api/user?page=' +page)
+              .then(response => {
+                this.users = response.data;
+              });
+          },
             updateUser(){
               this.$Progress.start();
               this.form.put('api/user/'+this.form.id)
@@ -229,9 +243,11 @@
               this.form.fill(position);
             },
             loadUsers(){
+              if(this.$gate.isAdmin()){
                 this.$Progress.start();
-                axios.get('api/user').then(response => this.users = response.data)
+                axios.get("api/user").then(({data}) => (this.users = data));
                 this.$Progress.finish();
+              }
             },
             loadPosition(){
                 axios.get('api/position').then(response => this.positions = response.data)
@@ -286,6 +302,16 @@
             }
         },
         created() {
+          Fire.$on('searching',() => {
+            let query = this.$parent.search; //take root from app.js search
+            axios.get('api/findUser?q=' + query)
+            .then((data) => {
+              this.users = data.data;
+            })
+            .catch(() => {
+
+            })
+          })
             this.loadUsers();
             this.loadPosition();
             this.loadLocation();

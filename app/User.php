@@ -44,6 +44,6 @@ class User extends Authenticatable
             ->leftJoin('positions', 'users.id_position', '=', 'positions.id_position')
             ->leftJoin('locations','users.id_location', '=', 'locations.id_location')
             // ->select('users.*', 'contacts.phone', 'orders.price')
-            ->get();
+            ->paginate(5);
     }
 }
