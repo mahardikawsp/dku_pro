@@ -27,8 +27,9 @@ Route::get('profile','API\UserController@profile');
 Route::get('findUser','API\UserController@search');
 Route::put('profile','API\UserController@updateProfile');
 
-Route::post('login', 'API\UserController@login');
-Route::post('register', 'API\UserController@register');
+Route::post('login', 'Android\AndroidController@login');
+Route::post('register', 'Android\AndroidController@register');
+Route::get('getuser/{id}', 'Android\AndroidController@detailUsers');
 
 Route::group(['middleware' => 'auth:api'], function(){
     Route::post('details', 'API\UserController@details');
