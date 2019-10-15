@@ -30,6 +30,8 @@ Route::put('profile','API\UserController@updateProfile');
 Route::post('login', 'Android\AndroidController@login');
 Route::post('register', 'Android\AndroidController@register');
 Route::get('getuser/{id}', 'Android\AndroidController@detailUsers');
+Route::post('checkin', 'Android\CheckinController@store');
+Route::post('checkout', 'Android\CheckoutController@store');
 
 Route::group(['middleware' => 'auth:api'], function(){
     Route::post('details', 'API\UserController@details');
