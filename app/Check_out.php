@@ -9,6 +9,6 @@ class check_out extends Model
     public $timestamps = false;
     
     protected $fillable = [
-        'time_out', 'lat', 'long','id_status','id_user'
+        'time_out', 'lat', 'long','id_status','id_user','keterangan'
     ];
 }

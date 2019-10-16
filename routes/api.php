@@ -21,7 +21,8 @@ Route::apiResources(['user'    => 'API\UserController',
                     'position' => 'API\PositionController',
                     'leader'   => 'API\LeaderController',
                     'location' => 'API\LocationController',
-                    'status'   => 'API\StatusController']);
+                    'status'   => 'API\StatusController',
+                    'absent'   => 'API\AbsentController']);
                     
 Route::get('profile','API\UserController@profile');
 Route::get('findUser','API\UserController@search');

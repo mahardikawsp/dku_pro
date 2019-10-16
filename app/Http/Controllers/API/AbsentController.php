@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\android;
+namespace App\Http\Controllers\API;
 
-use App\Check_ins;
+use App\Absent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class CheckinController extends Controller
+class AbsentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class CheckinController extends Controller
      */
     public function index()
     {
-        //
+        return Absent::allJoin();
     }
 
     /**
@@ -36,23 +36,16 @@ class CheckinController extends Controller
      */
     public function store(Request $request)
     {
-        return Check_ins::create([
-            'time_in'     => $request['time_in'],
-            'lat'         => $request['lat'],
-            'long'        => $request['long'],
-            'id_status'   => $request['id_status'],
-            'keterangan'  => $request['keterangan'],
-            'id_user'     => $request['id_user']
-        ]);
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\check_ins  $check_ins
+     * @param  \App\absent  $absent
      * @return \Illuminate\Http\Response
      */
-    public function show(check_ins $check_ins)
+    public function show(absent $absent)
     {
         //
     }
@@ -60,10 +53,10 @@ class CheckinController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\check_ins  $check_ins
+     * @param  \App\absent  $absent
      * @return \Illuminate\Http\Response
      */
-    public function edit(check_ins $check_ins)
+    public function edit(absent $absent)
     {
         //
     }
@@ -72,10 +65,10 @@ class CheckinController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\check_ins  $check_ins
+     * @param  \App\absent  $absent
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, check_ins $check_ins)
+    public function update(Request $request, absent $absent)
     {
         //
     }
@@ -83,10 +76,10 @@ class CheckinController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\check_ins  $check_ins
+     * @param  \App\absent  $absent
      * @return \Illuminate\Http\Response
      */
-    public function destroy(check_ins $check_ins)
+    public function destroy(absent $absent)
     {
         //
     }

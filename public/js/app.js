@@ -1812,8 +1812,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('Component mounted.');
+  data: function data() {
+    return {
+      absents: {}
+    };
+  },
+  methods: {
+    loadAbsents: function loadAbsents() {
+      var _this = this;
+
+      this.$Progress.start();
+      axios.get('api/absent').then(function (response) {
+        return _this.absents = response.data;
+      });
+      this.$Progress.finish();
+    }
+  },
+  created: function created() {
+    this.loadAbsents();
   }
 });
 
@@ -62627,196 +62643,217 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("section", { staticClass: "content" }, [
+      _c("div", { staticClass: "container-fluid" }, [
+        _vm._m(1),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card", staticStyle: { border: "1px solid #d6d6d6" } },
+          [
+            _c("div", { staticClass: "card-header" }),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body p-0" }, [
+              _c("table", { staticClass: "table table-condensed" }, [
+                _vm._m(2),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.absents.data, function(absent) {
+                    return _c("tr", { key: absent.id }, [
+                      _c("td", [_vm._v(" " + _vm._s(absent.id) + " ")]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(" " + _vm._s(_vm._f("tgl_indo")(absent.time_in)))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(" " + _vm._s(absent.name) + " ")]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(" " + _vm._s(_vm._f("jam")(absent.time_in)))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(
+                          " " + _vm._s(_vm._f("jam")(absent.time_out)) + " "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(3, true),
+                      _vm._v(" "),
+                      _vm._m(4, true)
+                    ])
+                  }),
+                  0
+                )
+              ])
+            ])
+          ]
+        )
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "content-header" }, [
-        _c("div", { staticClass: "container-fluid" }, [
-          _c("div", { staticClass: "row mb-2" }, [
-            _c("div", { staticClass: "col-sm-6" }, [
-              _c("h1", { staticClass: "m-0 text-dark" }, [
-                _vm._v("Dashboard Absensi")
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-6" }, [
-              _c("ol", { staticClass: "breadcrumb float-sm-right" }, [
-                _c("li", { staticClass: "breadcrumb-item" }, [
-                  _c("a", { attrs: { href: "#" } }, [_vm._v("Home")])
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "breadcrumb-item active" }, [
-                  _vm._v("Absensi")
-                ])
+    return _c("div", { staticClass: "content-header" }, [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row mb-2" }, [
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("h1", { staticClass: "m-0 text-dark" }, [
+              _vm._v("Dashboard Absensi")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("ol", { staticClass: "breadcrumb float-sm-right" }, [
+              _c("li", { staticClass: "breadcrumb-item" }, [
+                _c("a", { attrs: { href: "#" } }, [_vm._v("Home")])
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "breadcrumb-item active" }, [
+                _vm._v("Absensi")
               ])
             ])
           ])
         ])
-      ]),
-      _vm._v(" "),
-      _c("section", { staticClass: "content" }, [
-        _c("div", { staticClass: "container-fluid" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12 col-12" }, [
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-12 col-12" }, [
+        _c(
+          "div",
+          {
+            staticClass: "small-box bg-info",
+            staticStyle: { "background-color": "#343a40 !important" }
+          },
+          [
+            _c("div", { staticClass: "inner" }, [
+              _c("h3", [_c("sup", { staticStyle: { "font-size": "20px" } })]),
+              _vm._v(" "),
               _c(
-                "div",
+                "select",
                 {
-                  staticClass: "small-box bg-info",
-                  staticStyle: { "background-color": "#343a40 !important" }
+                  staticClass: "form-control",
+                  attrs: { name: "filter", id: "filter" }
                 },
                 [
-                  _c("div", { staticClass: "inner" }, [
-                    _c("h3", [
-                      _c("sup", { staticStyle: { "font-size": "20px" } })
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        staticClass: "form-control",
-                        attrs: { name: "filter", id: "filter" }
-                      },
-                      [
-                        _c("option", { attrs: { value: "" } }, [
-                          _vm._v("Filter Tanggal")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "" } }, [
-                          _vm._v("Filter Bulan")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "" } }, [
-                          _vm._v("Filter Tahun")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("p"),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        staticClass: "form-control",
-                        attrs: { name: "filter", id: "filter" }
-                      },
-                      [
-                        _c("option", { attrs: { value: "" } }, [
-                          _vm._v("Filter Tanggall")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "" } }, [
-                          _vm._v("Filter Bulan")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "" } }, [
-                          _vm._v("Filter Tahun")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("p"),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        staticClass: "form-control",
-                        attrs: { name: "filter", id: "filter" }
-                      },
-                      [
-                        _c("option", { attrs: { value: "" } }, [
-                          _vm._v("Filter User")
-                        ])
-                      ]
-                    )
+                  _c("option", { attrs: { value: "" } }, [
+                    _vm._v("Filter Tanggal")
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "a",
-                    { staticClass: "small-box-footer", attrs: { href: "#" } },
-                    [
-                      _vm._v("Tampilkan Data "),
-                      _c("i", { staticClass: "fas fa-arrow-circle-right" })
-                    ]
-                  )
+                  _c("option", { attrs: { value: "" } }, [
+                    _vm._v("Filter Bulan")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "" } }, [
+                    _vm._v("Filter Tahun")
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c("p"),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  staticClass: "form-control",
+                  attrs: { name: "filter", id: "filter" }
+                },
+                [
+                  _c("option", { attrs: { value: "" } }, [
+                    _vm._v("Filter Tanggall")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "" } }, [
+                    _vm._v("Filter Bulan")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "" } }, [
+                    _vm._v("Filter Tahun")
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c("p"),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  staticClass: "form-control",
+                  attrs: { name: "filter", id: "filter" }
+                },
+                [
+                  _c("option", { attrs: { value: "" } }, [
+                    _vm._v("Filter User")
+                  ])
                 ]
               )
+            ]),
+            _vm._v(" "),
+            _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+              _vm._v("Tampilkan Data "),
+              _c("i", { staticClass: "fas fa-arrow-circle-right" })
             ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "card",
-              staticStyle: { border: "1px solid #d6d6d6" }
-            },
-            [
-              _c("div", { staticClass: "card-header" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body p-0" }, [
-                _c("table", { staticClass: "table table-condensed" }, [
-                  _c("thead", [
-                    _c("tr", [
-                      _c("th", { staticStyle: { width: "10px" } }, [
-                        _vm._v("No")
-                      ]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Tanggal")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Karyawan")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Absen Masuk")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Absen Pulang")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Keterangan")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Perfomance")])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("tbody", [
-                    _c("tr", [
-                      _c("td", [_vm._v("1.")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("08 Oktober 2019")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("Kanjeng")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("08.00 WIB")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("17.00 WIB")]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("span", { staticClass: "badge bg-danger" }, [
-                          _vm._v("Ontime")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("div", { staticClass: "progress progress-xs" }, [
-                          _c("div", {
-                            staticClass: "progress-bar progress-bar-danger",
-                            staticStyle: { width: "55%" }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "badge bg-info" }, [
-                          _vm._v("60%")
-                        ])
-                      ])
-                    ])
-                  ])
-                ])
-              ])
-            ]
-          )
-        ])
+          ]
+        )
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { staticStyle: { width: "10px" } }, [_vm._v("No")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Tanggal")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Karyawan")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Absen Masuk")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Absen Pulang")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Keterangan")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Perfomance")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("span", { staticClass: "badge bg-danger" }, [_vm._v("Ontime")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("div", { staticClass: "progress progress-xs" }, [
+        _c("div", {
+          staticClass: "progress-bar progress-bar-danger",
+          staticStyle: { width: "55%" }
+        })
+      ]),
+      _vm._v(" "),
+      _c("span", { staticClass: "badge bg-info" }, [_vm._v("60%")])
     ])
   }
 ]
@@ -84380,6 +84417,9 @@ Vue.filter('upText', function (text) {
 });
 Vue.filter('tgl_indo', function (created) {
   return moment__WEBPACK_IMPORTED_MODULE_0___default()(created).format('LL');
+});
+Vue.filter('jam', function (created) {
+  return moment__WEBPACK_IMPORTED_MODULE_0___default()(created).format('LT');
 });
 window.Fire = new Vue();
 /**

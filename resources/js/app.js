@@ -68,6 +68,10 @@ Vue.filter('tgl_indo',function(created){
     return moment(created).format('LL');
 })
 
+Vue.filter('jam',function(created){
+  return moment(created).format('LT');
+})
+
 window.Fire = new Vue();
 
 /**

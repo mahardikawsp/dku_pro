@@ -41,6 +41,7 @@ class CheckoutController extends Controller
             'lat'         => $request['lat'],
             'long'        => $request['long'],
             'id_status'   => $request['id_status'],
+            'keterangan'  => $request['keterangan'],
             'id_user'     => $request['id_user']
         ]);
     }

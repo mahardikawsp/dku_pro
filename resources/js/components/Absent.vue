@@ -71,12 +71,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1.</td>
-                      <td>08 Oktober 2019</td>
-                      <td>Kanjeng</td>
-                      <td>08.00 WIB</td>
-                      <td>17.00 WIB</td>
+                    <tr v-for="absent in absents.data" :key="absent.id">
+                      <td> {{ absent.id }} </td>
+                      <td> {{ absent.time_in | tgl_indo }}</td>
+                      <td> {{ absent.name }} </td>
+                      <td> {{ absent.time_in | jam}}</td>
+                      <td> {{ absent.time_out | jam}} </td>
                       <td><span class="badge bg-danger">Ontime</span></td>
                       <td><div class="progress progress-xs">
                           <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
@@ -97,8 +97,20 @@
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
+        data(){
+            return {
+                absents : {}
+            }
+        },
+        methods : {
+            loadAbsents(){
+                this.$Progress.start();
+                axios.get('api/absent').then(response => this.absents = response.data)
+                this.$Progress.finish();
+            }
+        },
+        created() {
+            this.loadAbsents();
         }
     }
 </script>
