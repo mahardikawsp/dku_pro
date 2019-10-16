@@ -62662,9 +62662,9 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "tbody",
-                  _vm._l(_vm.absents.data, function(absent) {
+                  _vm._l(_vm.absents.data, function(absent, index) {
                     return _c("tr", { key: absent.id }, [
-                      _c("td", [_vm._v(" " + _vm._s(absent.id) + " ")]),
+                      _c("td", [_vm._v(" " + _vm._s(index + 1) + " ")]),
                       _vm._v(" "),
                       _c("td", [
                         _vm._v(" " + _vm._s(_vm._f("tgl_indo")(absent.time_in)))
@@ -62682,9 +62682,13 @@ var render = function() {
                         )
                       ]),
                       _vm._v(" "),
-                      _vm._m(3, true),
+                      _c("td", [
+                        _c("span", { staticClass: "badge bg-success" }, [
+                          _vm._v(_vm._s(absent.status_masuk))
+                        ])
+                      ]),
                       _vm._v(" "),
-                      _vm._m(4, true)
+                      _vm._m(3, true)
                     ])
                   }),
                   0
@@ -62773,7 +62777,7 @@ var staticRenderFns = [
                 },
                 [
                   _c("option", { attrs: { value: "" } }, [
-                    _vm._v("Filter Tanggall")
+                    _vm._v("Filter Lokasi")
                   ]),
                   _vm._v(" "),
                   _c("option", { attrs: { value: "" } }, [
@@ -62838,14 +62842,6 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("td", [
-      _c("span", { staticClass: "badge bg-danger" }, [_vm._v("Ontime")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
       _c("div", { staticClass: "progress progress-xs" }, [
         _c("div", {
           staticClass: "progress-bar progress-bar-danger",
@@ -62853,7 +62849,7 @@ var staticRenderFns = [
         })
       ]),
       _vm._v(" "),
-      _c("span", { staticClass: "badge bg-info" }, [_vm._v("60%")])
+      _c("span", { staticClass: "badge bg-info" }, [_vm._v("100%")])
     ])
   }
 ]

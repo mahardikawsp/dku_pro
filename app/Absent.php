@@ -16,7 +16,8 @@ class Absent extends Model
             ->join('statuss as a', 'check_ins.id_status', '=','a.id_status')
             ->join('statuss as b', 'check_outs.id_status', '=','b.id_status')
             ->select('users.name', 'check_ins.time_in', 'check_outs.time_out',
-                     'positions.position','locations.location','a.type','b.type')
+                     'positions.position','locations.location','a.type','b.type','a.id_status as status_masuk',
+                     'b.id_status as status_pulang')
             ->paginate(5);
     }
 }

@@ -35,7 +35,7 @@
                 </select>
                 <p></p>
                 <select class="form-control" name="filter" id="filter">
-                <option value="">Filter Tanggall</option>
+                <option value="">Filter Lokasi</option>
                 <option value="">Filter Bulan</option>
                 <option value="">Filter Tahun</option>
               </select>
@@ -71,17 +71,17 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="absent in absents.data" :key="absent.id">
-                      <td> {{ absent.id }} </td>
+                    <tr v-for="(absent, index) in absents.data" :key="absent.id">
+                      <td> {{ index+1 }} </td>
                       <td> {{ absent.time_in | tgl_indo }}</td>
                       <td> {{ absent.name }} </td>
                       <td> {{ absent.time_in | jam}}</td>
                       <td> {{ absent.time_out | jam}} </td>
-                      <td><span class="badge bg-danger">Ontime</span></td>
+                      <td><span class="badge bg-success">{{ absent.status_masuk }}</span></td>
                       <td><div class="progress progress-xs">
                           <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
                         </div>
-                     <span class="badge bg-info">60%</span>
+                     <span class="badge bg-info">100%</span>
                      </td>
                     </tr>
                   </tbody>
