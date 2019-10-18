@@ -9,6 +9,10 @@ class Android extends Model
 {
     protected $table = 'users';
 
+    protected $fillable = [
+        'imei'
+    ];
+
     public static function GetUser($id){
         return $user = DB::table('users')
             ->leftJoin('positions', 'users.id_position', '=', 'positions.id_position')

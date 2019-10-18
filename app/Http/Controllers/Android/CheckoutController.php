@@ -5,6 +5,7 @@ namespace App\Http\Controllers\android;
 use App\Check_out;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
@@ -36,14 +37,36 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-        return Check_out::create([
-            'time_out'     => $request['time_out'],
-            'lat'         => $request['lat'],
-            'long'        => $request['long'],
-            'id_status'   => $request['id_status'],
-            'keterangan'  => $request['keterangan'],
-            'id_user'     => $request['id_user']
-        ]);
+        $now = \Carbon\Carbon::now();
+        $user = $request['id_user'];
+        $sekarang = $now->format('Y-m-d');
+
+        $user = Check_out::where('id_user', '=', $request->id_user)
+                          ->where(DB::raw("DATE(check_outs.time_out)"), '=', $sekarang)->first();
+        
+        if($user){
+            $status  = 'failed';
+            $message = 'Sudah Check Out';
+            $code = 400;
+            $data = null;
+        } else {
+            $status  = 'success';
+            $message = 'Checkout Berhasil';
+            $code = 200;
+            $absent = Check_out::create([
+                'time_out'     => $request['time_out'],
+                'lat'         => $request['lat'],
+                'long'        => $request['long'],
+                'id_status'   => $request['id_status'],
+                'keterangan'  => $request['keterangan'],
+                'id_user'     => $request['id_user']
+            ]);
+            $data = $absent;
+        } 
+        return response()->json([
+            'status' => $status,
+            'message' => $message,
+            'data' => $data], $code);
     }
 
     /**

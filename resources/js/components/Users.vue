@@ -48,8 +48,8 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="user in users.data" :key="user.id">
-                      <td>{{ user.id }}</td>
+                    <tr v-for="(user,index) in users.data" :key="user.id">
+                      <td>{{ index+1 }}</td>
                       <td>{{ user.name }}</td>
                       <td>{{ user.no_hp }}</td>
                       <td>{{ user.position }}</td>
@@ -87,7 +87,7 @@
         <!-- start modal -->
         <!-- Button trigger modal -->
         <!-- Modal -->
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -161,6 +161,13 @@
                     </div>
 
                     <div class="form-group">
+                    <label>Imei HP</label>
+                    <input v-model="form.imei" type="text" name="imei" placeholder="imei"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('imei') }">
+                    <has-error :form="form" field="imei"></has-error>
+                    </div>
+
+                    <div class="form-group">
                     <label>Status</label>
                         <select name="tipe" id="tipe" v-model="form.tipe" class="form-control" :class="{'is-invalid': form.errors.has('tipe')}">
                             <option value="">Status</option>
@@ -203,6 +210,7 @@
                         photo       : '',
                         id_leader   : '',
                         tipe      : '',
+                        imei      : '',
                 })
             }
         },

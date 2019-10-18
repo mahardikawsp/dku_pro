@@ -105,7 +105,21 @@ class AndroidController extends Controller
         ]);
 
         if($user){
-            if ($request->imei == $user->imei) {
+            if(!$user->imei){
+                $user->update([
+                    'imei'        => $request['imei']
+                ]);
+                
+                if($request->imei == $user->imei){
+                    $status  = 'success';
+                    $message = 'Login sukses';
+                    
+                    // tampilkan data user menggunakan method toArray
+                    $data = $user->toArray();
+                    $code = 200;
+                }
+            }
+            elseif ($request->imei == $user->imei) {
                 // generate token
                 $status  = 'success';
                 $message = 'Login sukses';

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\android;
 
 use App\Check_ins;
+use App\Android;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class CheckinController extends Controller
 {
@@ -36,14 +38,36 @@ class CheckinController extends Controller
      */
     public function store(Request $request)
     {
-        return Check_ins::create([
-            'time_in'     => $request['time_in'],
-            'lat'         => $request['lat'],
-            'long'        => $request['long'],
-            'id_status'   => $request['id_status'],
-            'keterangan'  => $request['keterangan'],
-            'id_user'     => $request['id_user']
-        ]);
+        $now = \Carbon\Carbon::now();
+        $user = $request['id_user'];
+        $sekarang = $now->format('Y-m-d');
+
+        $user = Check_ins::where('id_user', '=', $request->id_user)
+                          ->where(DB::raw("DATE(check_ins.time_in)"), '=', $sekarang)->first();
+        
+        if($user){
+            $status  = 'failed';
+            $message = 'Sudah Check In';
+            $code = 400;
+            $data = null;
+        } else {
+            $status  = 'success';
+            $message = 'Checkin Berhasil';
+            $code = 200;
+            $absent = Check_ins::create([
+                'time_in'     => $request['time_in'],
+                'lat'         => $request['lat'],
+                'long'        => $request['long'],
+                'id_status'   => $request['id_status'],
+                'keterangan'  => $request['keterangan'],
+                'id_user'     => $request['id_user']
+            ]);
+            $data = $absent;
+        } 
+        return response()->json([
+            'status' => $status,
+            'message' => $message,
+            'data' => $data], $code);
     }
 
     /**

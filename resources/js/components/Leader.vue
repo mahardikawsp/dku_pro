@@ -72,7 +72,7 @@
         <!-- start modal -->
         <!-- Button trigger modal -->
         <!-- Modal -->
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -154,7 +154,7 @@
             },
             loadUsers(){
                 this.$Progress.start();
-                axios.get('api/user').then(response => this.users = response.data)
+                axios.get('api/useronly').then(response => this.users = response.data)
                 this.$Progress.finish();
             },
             editModal(leader){

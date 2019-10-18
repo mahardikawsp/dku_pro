@@ -73,6 +73,7 @@ Vue.filter('jam',function(created){
 })
 
 
+
 window.Fire = new Vue();
 
 /**

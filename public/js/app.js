@@ -1811,25 +1811,88 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      absents: {}
+      absents: {},
+      users: {},
+      locations: {},
+      selectedValue1: ''
     };
   },
   methods: {
-    loadAbsents: function loadAbsents() {
+    shouldDisplay: function shouldDisplay(value) {
+      return this.selectedValue1 === value;
+    },
+    loadLocation: function loadLocation() {
       var _this = this;
+
+      axios.get('api/location').then(function (response) {
+        return _this.locations = response.data;
+      });
+    },
+    loadAbsents: function loadAbsents() {
+      var _this2 = this;
 
       this.$Progress.start();
       axios.get('api/absent').then(function (response) {
-        return _this.absents = response.data;
+        return _this2.absents = response.data;
       });
       this.$Progress.finish();
+    },
+    loadUsers: function loadUsers() {
+      var _this3 = this;
+
+      this.$Progress.start();
+      axios.get('api/useronly').then(function (response) {
+        return _this3.users = response.data;
+      });
+      this.$Progress.finish();
+    },
+    fuser: function fuser() {
+      var _this4 = this;
+
+      var query = event.target.value; //take root from app.js search
+
+      axios.get('api/uabsent?q=' + query).then(function (data) {
+        _this4.absents = data.data;
+        Fire.$emit('afterCreate');
+      })["catch"](function () {});
+    },
+    flocation: function flocation() {
+      var _this5 = this;
+
+      var query = event.target.value; //take root from app.js search
+
+      axios.get('api/uabsent?q=' + query).then(function (data) {
+        _this5.absents = data.data;
+        Fire.$emit('afterCreate');
+      })["catch"](function () {});
     }
   },
   created: function created() {
+    this.loadUsers();
     this.loadAbsents();
+    this.loadLocation(); // Fire.$on('afterCreate',() => {
+    //   this.loadAbsents();
+    // });
   }
 });
 
@@ -2302,7 +2365,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.$Progress.start();
-      axios.get('api/user').then(function (response) {
+      axios.get('api/useronly').then(function (response) {
         return _this2.users = response.data;
       });
       this.$Progress.finish();
@@ -3462,6 +3525,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3480,7 +3550,8 @@ __webpack_require__.r(__webpack_exports__);
         id_position: '',
         photo: '',
         id_leader: '',
-        tipe: ''
+        tipe: '',
+        imei: ''
       })
     };
   },
@@ -62648,7 +62719,230 @@ var render = function() {
     _vm._v(" "),
     _c("section", { staticClass: "content" }, [
       _c("div", { staticClass: "container-fluid" }, [
-        _vm._m(1),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-lg-12 col-12" }, [
+            _c(
+              "div",
+              {
+                staticClass: "small-box bg-info",
+                staticStyle: { "background-color": "#343a40 !important" }
+              },
+              [
+                _c("div", { staticClass: "inner" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.selectedValue1,
+                          expression: "selectedValue1"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "filter", id: "filter" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.selectedValue1 = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "" } }, [
+                        _vm._v("Filter Berdasarkan")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "A" } }, [
+                        _vm._v("Filter Tanggal")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "B" } }, [
+                        _vm._v("Filter Bulan")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "C" } }, [
+                        _vm._v("Filter Tahun")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "D" } }, [
+                        _vm._v("Filter Lokasi")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("p"),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.shouldDisplay("A"),
+                        expression: "shouldDisplay('A')"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "date", name: "date" }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.shouldDisplay("B"),
+                          expression: "shouldDisplay('B')"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "filter", id: "filter" }
+                    },
+                    [
+                      _c("option", { attrs: { value: "" } }, [
+                        _vm._v("Filter Berdasar Bulan")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "1" } }, [
+                        _vm._v("Januari")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "2" } }, [
+                        _vm._v("Februari")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.shouldDisplay("C"),
+                          expression: "shouldDisplay('C')"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "filter", id: "filter" }
+                    },
+                    [
+                      _c("option", { attrs: { value: "" } }, [
+                        _vm._v("Filter Berdasar Tahun")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "1" } }, [_vm._v("2019")]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "2" } }, [_vm._v("2020")])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.shouldDisplay("D"),
+                          expression: "shouldDisplay('D')"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "filter", id: "filter" }
+                    },
+                    [
+                      _c("option", { attrs: { value: "" } }, [
+                        _vm._v("Filter Berdasar Lokasi")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.locations, function(location) {
+                        return _c(
+                          "option",
+                          {
+                            key: location.value,
+                            domProps: { value: location.id_location }
+                          },
+                          [
+                            _vm._v(
+                              " \n                           " +
+                                _vm._s(location.location) +
+                                "\n                           "
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c("p"),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      staticClass: "form-control",
+                      attrs: { name: "filter", id: "filter" },
+                      on: { click: _vm.fuser }
+                    },
+                    [
+                      _c("option", { attrs: { value: "" } }, [
+                        _vm._v("Filter User")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.users, function(user) {
+                        return _c(
+                          "option",
+                          { key: user.value, domProps: { value: user.id } },
+                          [
+                            _vm._v(
+                              " \n                           " +
+                                _vm._s(user.name) +
+                                "\n                           "
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "small-box-footer",
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        _vm.isActive = !_vm.isActive
+                      }
+                    }
+                  },
+                  [
+                    _vm._v("Tampilkan Data "),
+                    _c("i", { staticClass: "fas fa-arrow-circle-right" })
+                  ]
+                )
+              ]
+            )
+          ])
+        ]),
         _vm._v(" "),
         _c(
           "div",
@@ -62673,22 +62967,23 @@ var render = function() {
                       _c("td", [_vm._v(" " + _vm._s(absent.name) + " ")]),
                       _vm._v(" "),
                       _c("td", [
-                        _vm._v(" " + _vm._s(_vm._f("jam")(absent.time_in)))
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
                         _vm._v(
-                          " " + _vm._s(_vm._f("jam")(absent.time_out)) + " "
+                          " " +
+                            _vm._s(_vm._f("jam")(absent.time_in)) +
+                            " | " +
+                            _vm._s(absent.absen_masuk)
                         )
                       ]),
                       _vm._v(" "),
                       _c("td", [
-                        _c("span", { staticClass: "badge bg-success" }, [
-                          _vm._v(_vm._s(absent.status_masuk))
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _vm._m(3, true)
+                        _vm._v(
+                          " " +
+                            _vm._s(_vm._f("jam")(absent.time_out)) +
+                            " | " +
+                            _vm._s(absent.absen_keluar) +
+                            " "
+                        )
+                      ])
                     ])
                   }),
                   0
@@ -62734,86 +63029,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-lg-12 col-12" }, [
-        _c(
-          "div",
-          {
-            staticClass: "small-box bg-info",
-            staticStyle: { "background-color": "#343a40 !important" }
-          },
-          [
-            _c("div", { staticClass: "inner" }, [
-              _c("h3", [_c("sup", { staticStyle: { "font-size": "20px" } })]),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  staticClass: "form-control",
-                  attrs: { name: "filter", id: "filter" }
-                },
-                [
-                  _c("option", { attrs: { value: "" } }, [
-                    _vm._v("Filter Tanggal")
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "" } }, [
-                    _vm._v("Filter Bulan")
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "" } }, [
-                    _vm._v("Filter Tahun")
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c("p"),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  staticClass: "form-control",
-                  attrs: { name: "filter", id: "filter" }
-                },
-                [
-                  _c("option", { attrs: { value: "" } }, [
-                    _vm._v("Filter Lokasi")
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "" } }, [
-                    _vm._v("Filter Bulan")
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "" } }, [
-                    _vm._v("Filter Tahun")
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c("p"),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  staticClass: "form-control",
-                  attrs: { name: "filter", id: "filter" }
-                },
-                [
-                  _c("option", { attrs: { value: "" } }, [
-                    _vm._v("Filter User")
-                  ])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-              _vm._v("Tampilkan Data "),
-              _c("i", { staticClass: "fas fa-arrow-circle-right" })
-            ])
-          ]
-        )
-      ])
-    ])
+    return _c("h3", [_c("sup", { staticStyle: { "font-size": "20px" } })])
   },
   function() {
     var _vm = this
@@ -62829,27 +63045,8 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Absen Masuk")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Absen Pulang")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Keterangan")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Perfomance")])
+        _c("th", [_vm._v("Absen Pulang")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("div", { staticClass: "progress progress-xs" }, [
-        _c("div", {
-          staticClass: "progress-bar progress-bar-danger",
-          staticStyle: { width: "55%" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "badge bg-info" }, [_vm._v("100%")])
     ])
   }
 ]
@@ -63062,7 +63259,7 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "modal fade",
+        staticClass: "modal",
         attrs: {
           id: "addModal",
           tabindex: "-1",
@@ -63426,7 +63623,7 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "modal fade",
+        staticClass: "modal",
         attrs: {
           id: "addModal",
           tabindex: "-1",
@@ -63862,7 +64059,7 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "modal fade",
+        staticClass: "modal",
         attrs: {
           id: "addModal",
           tabindex: "-1",
@@ -65289,7 +65486,7 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "modal fade",
+        staticClass: "modal",
         attrs: {
           id: "addModal",
           tabindex: "-1",
@@ -65647,9 +65844,9 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "tbody",
-                    _vm._l(_vm.users.data, function(user) {
+                    _vm._l(_vm.users.data, function(user, index) {
                       return _c("tr", { key: user.id }, [
-                        _c("td", [_vm._v(_vm._s(user.id))]),
+                        _c("td", [_vm._v(_vm._s(index + 1))]),
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(user.name))]),
                         _vm._v(" "),
@@ -65724,7 +65921,7 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "modal fade",
+        staticClass: "modal",
         attrs: {
           id: "addModal",
           tabindex: "-1",
@@ -66174,6 +66371,46 @@ var render = function() {
                         _vm._v(" "),
                         _c("has-error", {
                           attrs: { form: _vm.form, field: "id_leader" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("label", [_vm._v("Imei HP")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.imei,
+                              expression: "form.imei"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: { "is-invalid": _vm.form.errors.has("imei") },
+                          attrs: {
+                            type: "text",
+                            name: "imei",
+                            placeholder: "imei"
+                          },
+                          domProps: { value: _vm.form.imei },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.form, "imei", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "imei" }
                         })
                       ],
                       1

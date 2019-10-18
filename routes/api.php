@@ -26,6 +26,7 @@ Route::apiResources(['user'    => 'API\UserController',
                     
 Route::get('profile','API\UserController@profile');
 Route::get('findUser','API\UserController@search');
+Route::get('uabsent','API\AbsentController@uabsent');
 Route::put('profile','API\UserController@updateProfile');
 
 Route::post('login', 'Android\AndroidController@login');
@@ -33,6 +34,7 @@ Route::post('register', 'Android\AndroidController@register');
 Route::get('getuser/{id}', 'Android\AndroidController@detailUsers');
 Route::post('checkin', 'Android\CheckinController@store');
 Route::post('checkout', 'Android\CheckoutController@store');
+Route::get('useronly', 'API\UserController@joinwp');
 
 Route::group(['middleware' => 'auth:api'], function(){
     Route::post('details', 'API\UserController@details');

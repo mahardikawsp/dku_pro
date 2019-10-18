@@ -27,6 +27,12 @@ class UserController extends Controller
         return User::allJoin();
     }
 
+    public function joinwp()
+    {
+        $this->authorize('isAdmin');
+        return User::all();
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -139,6 +145,7 @@ class UserController extends Controller
             'id_location' => $request['id_location'],
             'id_leader'   => $request['id_leader'],
             'id_position' => $request['id_position'],
+            'imei'        => $request['imei'],
             'tipe'      => $request['tipe']
         ]);
         return ['message' => 'Update berhasil'];
