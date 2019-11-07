@@ -34,27 +34,28 @@
                 <option value="B">Filter Bulan</option>
                 <option value="C">Filter Tahun</option>
                 <option value="D">Filter Lokasi</option>
+                <option value="E">Filter Status</option>
                 </select>
                 <p></p>
-                <input v-show="shouldDisplay('A')" type="date" name="date" class="form-control">
-                <select v-show="shouldDisplay('B')" class="form-control" name="filter" id="filter">
+                <input v-model="form['date']" v-show="shouldDisplay('A')" type="date" name="date" class="form-control">
+                <select v-model="form['month']" v-show="shouldDisplay('B')" class="form-control" name="month" id="filter">
                 <option value="">Filter Berdasar Bulan</option>
                 <option value="1">Januari</option>
                 <option value="2">Februari</option>
                 </select>
-                <select v-show="shouldDisplay('C')" class="form-control" name="filter" id="filter">
+                <select v-model="form['year']" v-show="shouldDisplay('C')" class="form-control" name="year" id="filter">
                 <option value="">Filter Berdasar Tahun</option>
                 <option value="1">2019</option>
                 <option value="2">2020</option>
                 </select>
-                <select v-show="shouldDisplay('D')" class="form-control" name="filter" id="filter">
+                <select v-model="form['location']" v-show="shouldDisplay('D')" class="form-control" name="location" id="filter">
                 <option value="">Filter Berdasar Lokasi</option>
                  <option v-for="location in locations" :value="location.id_location" :key="location.value"> 
                                {{ location.location }}
                                </option>
                 </select>
                <p></p>
-              <select v-on:click ="fuser" class="form-control" name="filter" id="filter">
+              <select v-model="form['userpoast']" v-on:click ="fuser" class="form-control" name="id_user" id="filter">
                 <option value="">Filter User</option>
                 <option v-for="user in users" :value="user.id" :key="user.value"> 
                                {{ user.name }}
@@ -63,7 +64,7 @@
               </div>
               
               
-              <a v-on:click="isActive = !isActive" href="#" class="small-box-footer">Tampilkan Data <i class="fas fa-arrow-circle-right"></i></a>
+              <a v-on:click = "fcomplete" href="#" class="small-box-footer">Tampilkan Data <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -81,6 +82,7 @@
                       <th style="width: 10px">No</th>
                       <th>Tanggal</th>
                       <th>Karyawan</th>
+                      <th>Lokasi</th>
                       <th>Absen Masuk</th>
                       <th>Absen Pulang</th>
                       <!-- <th>Keterangan</th>
@@ -92,6 +94,7 @@
                       <td> {{ index+1 }} </td>
                       <td> {{ absent.time_in | tgl_indo }}</td>
                       <td> {{ absent.name }} </td>
+                      <td>{{ absent.location }}</td>
                       <td> {{ absent.time_in | jam}} | {{ absent.absen_masuk }}</td>
                       <td> {{ absent.time_out | jam}} | {{ absent.absen_keluar }} </td>
                       <!-- <td><span class="badge bg-success"></span></td>
@@ -103,6 +106,9 @@
                     </tr>
                   </tbody>
                 </table>
+              </div>
+              <div class="card-footer">
+                <pagination :data="absents" @pagination-change-page="getResults"></pagination>
               </div>
               <!-- /.card-body -->
             </div>
@@ -116,13 +122,20 @@
     export default {
         data(){
             return {
-                absents : {},
+                absents : [],
                 users : {},
                 locations : {},
-                selectedValue1: ''
+                selectedValue1: '',
+                form : {}
             }
         },
         methods : {
+          getResults(page = 1){
+              axios.get('api/absent?page=' +page)
+              .then(response => {
+                this.absents = response.data;
+              });
+          },
             shouldDisplay: function (value) {
                 return this.selectedValue1 === value;
             },
@@ -158,6 +171,9 @@
             })
               .catch(() => {
               })
+            },
+            fcomplete(){
+              console.info(this.form)
             }
         },
         created() {

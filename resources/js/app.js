@@ -51,7 +51,9 @@ let routes = [
     { path: '/status', component: require('./components/Status.vue').default },
     { path: '/absensi', component: require('./components/Absent.vue').default },
     { path: '/dev', component: require('./components/Developer.vue').default },
-    { path: '*', component: require('./components/notFound.vue').default }
+    { path: '/sellorder', component: require('./components/Sellorder.vue').default },
+    { path: '/outlets', component: require('./components/Outlets.vue').default },
+    { path: '/disota', component: require('./components/Disota.vue').default }
   ]
 
   const router = new VueRouter({
@@ -113,6 +115,11 @@ Vue.component(
 Vue.component(
   'not-found',
   require('./components/notFound.vue').default
+);
+
+Vue.component(
+  'dashboard',
+  require('./components/Absent.vue').default
 );
 
 const app = new Vue({

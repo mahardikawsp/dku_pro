@@ -6,6 +6,7 @@ use App\Android;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class AndroidController extends Controller
 {
@@ -93,12 +94,23 @@ class AndroidController extends Controller
      */
 
     public function login(Request $request){
-        $user = Android::where('no_hp', '=', $request->no_hp)->first();
+        $cek = Android::where('no_hp', '=', $request->no_hp)->first();
+        $user = DB::table('users')
+            ->leftJoin('positions', 'users.id_position', '=', 'positions.id_position')
+            ->leftJoin('locations','users.id_location', '=', 'locations.id_location')
+            ->leftJoin('leaders','users.id', '=', 'leaders.id_employee')
+            ->select('users.id','users.name','users.no_hp','users.photo','users.imei',
+                    'users.id_location','users.id_position','users.id_leader',
+                    'users.id_location','leaders.type',
+                    'positions.position','locations.location','locations.latitude','locations.longitude')
+            ->where('users.no_hp',$request->no_hp)
+            ->first();
 
         $status = "error";
         $message = "";
         $data = null;
         $code = 401;
+        $tipe = null;
         $this->validate($request,[
             'no_hp'     => 'required',
             'imei'  => 'required'
@@ -106,7 +118,7 @@ class AndroidController extends Controller
 
         if($user){
             if(!$user->imei){
-                $user->update([
+                $cek->update([
                     'imei'        => $request['imei']
                 ]);
                 
@@ -115,7 +127,12 @@ class AndroidController extends Controller
                     $message = 'Login sukses';
                     
                     // tampilkan data user menggunakan method toArray
-                    $data = $user->toArray();
+                    $data = $user;
+                    if($user->type == null){
+                       $tipe = 'pegawai';
+                    } else {
+                       $tipe = $user->type;
+                    }
                     $code = 200;
                 }
             }
@@ -125,7 +142,12 @@ class AndroidController extends Controller
                 $message = 'Login sukses';
                 
                 // tampilkan data user menggunakan method toArray
-                $data = $user->toArray();
+                $data = $user;
+                if($user->type == null){
+                    $tipe = 'pegawai';
+                } else {
+                    $tipe = $user->type;
+                 }
                 $code = 200;
             }else{
                 $message = "Login gagal, hp tidak sesuai";
@@ -136,6 +158,7 @@ class AndroidController extends Controller
         return response()->json([
             'status' => $status,
             'message' => $message,
+            'tipe' => $tipe,
             'data' => $data], $code);
     }
 

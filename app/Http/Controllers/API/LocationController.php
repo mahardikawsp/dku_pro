@@ -37,10 +37,14 @@ class LocationController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'location' => 'required|string|max:50',
+            'location'    => 'required|string|max:50',
+            'latitude'    => 'required|string',
+            'longitude'   => 'required|string',
         ]);
         return Location::create([
-            'location' => $request['location'],
+            'location'        => $request['location'],
+            'latitude'        => $request['latitude'],
+            'longitude'       => $request['longitude'],
         ]);
     }
 
@@ -76,9 +80,11 @@ class LocationController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'location'        => 'required|string|max:50',
+            'location'    => 'required|string|max:50',
+            'latitude'    => 'required|string',
+            'longitude'   => 'required|string',
         ]);
-        $location = Location::where('id_location', '=', $id)->update($request->all());
+        $jabatan = Location::where('id_location', '=', $id)->update($request->all());
         return ['message' => 'Update berhasil'];
     }
 

@@ -40,17 +40,27 @@ class AbsentController extends Controller
     public static function uabsent(){
         if($search = \Request::get('q')){
         $query = (new static)->paginateArray(
-            DB::select("SELECT a.name,b.time_in,c.time_out,d.type as absen_masuk,e.type as absen_keluar 
+            DB::select("SELECT a.name,b.time_in,c.time_out,d.type as absen_masuk,e.type as absen_keluar, f.location 
             from users a join check_ins b on a.id = b.id_user 
             left join check_outs c on date(b.time_in) = date(c.time_out) 
             left join statuss d on b.id_status = d.id_status 
+            left join locations f on a.id_location = f.id_location
             left join statuss e on c.id_status = e.id_status WHERE a.id LIKE '%$search%' GROUP BY b.time_in")
         );
-        return $query;
+        } else {
+            $query = (new static)->paginateArray(
+                DB::select("SELECT a.name,b.time_in,c.time_out,d.type as absen_masuk,e.type as absen_keluar, f.location 
+                from users a join check_ins b on a.id = b.id_user 
+                left join check_outs c on date(b.time_in) = date(c.time_out) 
+                left join statuss d on b.id_status = d.id_status 
+                left join locations f on a.id_location = f.id_location
+                left join statuss e on c.id_status = e.id_status GROUP BY b.time_in")
+            );
         }
+        return $query;
     }
 
-    public function paginateArray($data, $perPage = 15)
+    public function paginateArray($data, $perPage = 10)
     {
         $page = Paginator::resolveCurrentPage();
         $total = count($data);

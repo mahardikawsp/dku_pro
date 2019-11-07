@@ -16,7 +16,30 @@
   <link rel="stylesheet" href="/css/adminlte.min.css">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-<style></style>
+<style>
+.progress {
+    display: -ms-flexbox;
+    display: flex;
+    height: 1rem;
+    overflow: hidden;
+    font-size: .75rem;
+    background-color: #e9ecef;
+    border-radius: .25rem;
+}
+.progress-bar {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-pack: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #007bff;
+    transition: width .6s ease;
+}
+</style>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper" id="app">
 
@@ -30,9 +53,9 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="index3.html" class="nav-link">Home</a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+      <!-- <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
-      </li>
+      </li> -->
     </ul>
 
     <!-- SEARCH FORM -->
@@ -164,6 +187,7 @@
             </ul>
           </li>
           @endcan
+          
           <li class="nav-item">
             <router-link to="/absensi" class="nav-link">
               <i class="nav-icon fas fa-user-check"></i>
@@ -172,6 +196,51 @@
               </p>
             </a>
             </li>
+
+            <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="fas fa-database nav-icon"></i>
+              <p>
+               Master Data Penjualan
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="/outlets" class="nav-link">
+                  <i class="fas fa-store-alt nav-icon"></i>
+                  <p>Outlet</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+            <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fab fa-sellsy"></i>
+              <p>
+               Data Penjualan
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="/sellorder" class="nav-link">
+                  <i class="fas fa-database nav-icon"></i>
+                  <p>Data Sellthrough</p>
+                </a>
+              </li>
+            </ul>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="/disota" class="nav-link">
+                  <i class="fas fa-database nav-icon"></i>
+                  <p>Distr OTA Vo Fisik Sell Perdn</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          
 
           <li class="nav-item">
             <router-link to="/profile" class="nav-link">
@@ -182,14 +251,14 @@
             </a>
             </li>
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
             <router-link to="/dev" class="nav-link">
               <i class="nav-icon fas fa-cogs"></i>
               <p>
                 Developer
               </p>
             </a>
-            </li>
+            </li> -->
 
             <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}"

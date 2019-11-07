@@ -27,14 +27,10 @@ class PositionController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'position'    => 'required|string|max:50',
-            'latitude'    => 'required|string',
-            'longitude'   => 'required|string',
+            'position'    => 'required|string|max:50'
         ]);
         return Position::create([
-            'position'        => $request['position'],
-            'latitude'        => $request['latitude'],
-            'longitude'       => $request['longitude'],
+            'position'        => $request['position']
         ]);
     }
 
@@ -59,9 +55,7 @@ class PositionController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'position'    => 'required|string|max:50',
-            'latitude'    => 'required|string',
-            'longitude'   => 'required|string',
+            'position'    => 'required|string|max:50'
         ]);
         $jabatan = Position::where('id_position', '=', $id)->update($request->all());
         return ['message' => 'Update berhasil'];
