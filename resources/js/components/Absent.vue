@@ -23,7 +23,7 @@
           
           
           <!-- ./col -->
-          <div class="col-lg-12 col-12">
+          <div class="col-lg-6 col-6">
             <!-- small box -->
             <div class="small-box bg-info" style="background-color: #343a40 !important;">
               <div class="inner">
@@ -42,6 +42,16 @@
                 <option value="">Filter Berdasar Bulan</option>
                 <option value="1">Januari</option>
                 <option value="2">Februari</option>
+                <option value="3">Maret</option>
+                <option value="4">April</option>
+                <option value="5">Mei</option>
+                <option value="6">Juni</option>
+                <option value="7">Juli</option>
+                <option value="8">Agustus</option>
+                <option value="9">September</option>
+                <option value="10">Oktober</option>
+                <option value="11">November</option>
+                <option value="12">Desember</option>
                 </select>
                 <select v-model="form['year']" v-show="shouldDisplay('C')" class="form-control" name="year" id="filter">
                 <option value="">Filter Berdasar Tahun</option>
@@ -68,6 +78,50 @@
             </div>
           </div>
           <!-- ./col -->
+          <div class="col-lg-6 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info" style="background-color: #343a40 !important;">
+              <div class="inner">
+                <h3><sup style="font-size: 20px"></sup></h3>
+                <select v-model="selectedValue11" class="form-control" name="filter" id="filter">
+                <option value="">Filter Berdasarkan</option>
+                <option value="A1">Filter Tanggal</option>
+                <option value="B1">Filter Bulan</option>
+                <option value="D1">Filter Lokasi</option>
+                </select>
+                <p></p>
+                <input v-model="tanggal1" v-show="shouldDisplayy('A1')" type="date" name="date" class="form-control">
+                <select v-model="bulan1" v-show="shouldDisplayy('B1')" class="form-control" name="month1" id="filter">
+                <option value="">Filter Berdasar Bulan</option>
+                <option value="1">Januari</option>
+                <option value="2">Februari</option>
+                <option value="3">Maret</option>
+                <option value="4">April</option>
+                <option value="5">Mei</option>
+                <option value="6">Juni</option>
+                <option value="7">Juli</option>
+                <option value="8">Agustus</option>
+                <option value="9">September</option>
+                <option value="10">Oktober</option>
+                <option value="11">November</option>
+                <option value="12">Desember</option>
+                </select>
+                <br v-show="shouldDisplayy('B1')">
+                <select v-model="tahun1" v-show="shouldDisplayy('B1')" class="form-control" name="year1" id="filter">
+                <option value="">Filter Berdasar Tahun</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                </select>
+                <select v-model="location1" v-show="shouldDisplayy('D1')" class="form-control" name="location1" id="filter">
+                <option value="">Filter Berdasar Lokasi</option>
+                 <option v-for="location in locations" :value="location.id_location" :key="location.value"> 
+                               {{ location.location }}
+                               </option>
+                </select>
+              </div>
+              <a v-on:click = "fekspor" href="#" class="small-box-footer">Ekspor Data <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
         </div>
         <!-- /.row -->
         <div class="card" style="border: 1px solid #d6d6d6;">
@@ -122,11 +176,16 @@
     export default {
         data(){
             return {
-                absents : [],
+                absents : {},
                 users : {},
                 locations : {},
                 selectedValue1: '',
-                form : {}
+                selectedValue11: '',
+                form : {},
+                tanggal1 : '',
+                bulan1 : '',
+                tahun1 : '',
+                location1 : '',
             }
         },
         methods : {
@@ -138,6 +197,9 @@
           },
             shouldDisplay: function (value) {
                 return this.selectedValue1 === value;
+            },
+            shouldDisplayy: function (value) {
+                return this.selectedValue11 === value;
             },
             loadLocation(){
                 axios.get('api/location').then(response => this.locations = response.data)
@@ -174,7 +236,10 @@
             },
             fcomplete(){
               console.info(this.form)
-            }
+            },
+            fekspor(){
+              window.open('/api/export?tanggal='+this.tanggal1+'&month='+this.bulan1+'&year='+this.tahun1+'&lokasi='+this.location1);
+           }
         },
         created() {
             this.loadUsers();

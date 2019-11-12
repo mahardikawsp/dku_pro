@@ -50,6 +50,8 @@ Route::post('upoutlet', 'API\OutletController@store');
 Route::post('usellorder', 'API\SellorderController@store');
 Route::post('udisota', 'API\DisotaController@store');
 
+Route::get('export', 'API\AbsentController@exportData');
+
 Route::group(['middleware' => 'auth:api'], function(){
     Route::post('details', 'API\UserController@details');
 });

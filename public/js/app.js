@@ -1834,14 +1834,73 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      absents: [],
+      absents: {},
       users: {},
       locations: {},
       selectedValue1: '',
-      form: {}
+      selectedValue11: '',
+      form: {},
+      tanggal1: '',
+      bulan1: '',
+      tahun1: '',
+      location1: ''
     };
   },
   methods: {
@@ -1855,6 +1914,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     shouldDisplay: function shouldDisplay(value) {
       return this.selectedValue1 === value;
+    },
+    shouldDisplayy: function shouldDisplayy(value) {
+      return this.selectedValue11 === value;
     },
     loadLocation: function loadLocation() {
       var _this2 = this;
@@ -1903,6 +1965,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     fcomplete: function fcomplete() {
       console.info(this.form);
+    },
+    fekspor: function fekspor() {
+      window.open('/api/export?tanggal=' + this.tanggal1 + '&month=' + this.bulan1 + '&year=' + this.tahun1 + '&lokasi=' + this.location1);
     }
   },
   created: function created() {
@@ -63631,7 +63696,7 @@ var render = function() {
     _c("section", { staticClass: "content" }, [
       _c("div", { staticClass: "container-fluid" }, [
         _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-lg-12 col-12" }, [
+          _c("div", { staticClass: "col-lg-6 col-6" }, [
             _c(
               "div",
               {
@@ -63778,6 +63843,40 @@ var render = function() {
                       _vm._v(" "),
                       _c("option", { attrs: { value: "2" } }, [
                         _vm._v("Februari")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "3" } }, [
+                        _vm._v("Maret")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "4" } }, [
+                        _vm._v("April")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "5" } }, [_vm._v("Mei")]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "6" } }, [_vm._v("Juni")]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "7" } }, [_vm._v("Juli")]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "8" } }, [
+                        _vm._v("Agustus")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "9" } }, [
+                        _vm._v("September")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "10" } }, [
+                        _vm._v("Oktober")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "11" } }, [
+                        _vm._v("November")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "12" } }, [
+                        _vm._v("Desember")
                       ])
                     ]
                   ),
@@ -63969,6 +64068,317 @@ var render = function() {
                 )
               ]
             )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-6 col-6" }, [
+            _c(
+              "div",
+              {
+                staticClass: "small-box bg-info",
+                staticStyle: { "background-color": "#343a40 !important" }
+              },
+              [
+                _c("div", { staticClass: "inner" }, [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.selectedValue11,
+                          expression: "selectedValue11"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "filter", id: "filter" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.selectedValue11 = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "" } }, [
+                        _vm._v("Filter Berdasarkan")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "A1" } }, [
+                        _vm._v("Filter Tanggal")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "B1" } }, [
+                        _vm._v("Filter Bulan")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "D1" } }, [
+                        _vm._v("Filter Lokasi")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("p"),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.tanggal1,
+                        expression: "tanggal1"
+                      },
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.shouldDisplayy("A1"),
+                        expression: "shouldDisplayy('A1')"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "date", name: "date" },
+                    domProps: { value: _vm.tanggal1 },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.tanggal1 = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.bulan1,
+                          expression: "bulan1"
+                        },
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.shouldDisplayy("B1"),
+                          expression: "shouldDisplayy('B1')"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "month1", id: "filter" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.bulan1 = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "" } }, [
+                        _vm._v("Filter Berdasar Bulan")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "1" } }, [
+                        _vm._v("Januari")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "2" } }, [
+                        _vm._v("Februari")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "3" } }, [
+                        _vm._v("Maret")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "4" } }, [
+                        _vm._v("April")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "5" } }, [_vm._v("Mei")]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "6" } }, [_vm._v("Juni")]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "7" } }, [_vm._v("Juli")]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "8" } }, [
+                        _vm._v("Agustus")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "9" } }, [
+                        _vm._v("September")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "10" } }, [
+                        _vm._v("Oktober")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "11" } }, [
+                        _vm._v("November")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "12" } }, [
+                        _vm._v("Desember")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("br", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.shouldDisplayy("B1"),
+                        expression: "shouldDisplayy('B1')"
+                      }
+                    ]
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.tahun1,
+                          expression: "tahun1"
+                        },
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.shouldDisplayy("B1"),
+                          expression: "shouldDisplayy('B1')"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "year1", id: "filter" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.tahun1 = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "" } }, [
+                        _vm._v("Filter Berdasar Tahun")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "2019" } }, [
+                        _vm._v("2019")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "2020" } }, [
+                        _vm._v("2020")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.location1,
+                          expression: "location1"
+                        },
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.shouldDisplayy("D1"),
+                          expression: "shouldDisplayy('D1')"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "location1", id: "filter" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.location1 = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "" } }, [
+                        _vm._v("Filter Berdasar Lokasi")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.locations, function(location) {
+                        return _c(
+                          "option",
+                          {
+                            key: location.value,
+                            domProps: { value: location.id_location }
+                          },
+                          [
+                            _vm._v(
+                              " \n                           " +
+                                _vm._s(location.location) +
+                                "\n                           "
+                            )
+                          ]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "small-box-footer",
+                    attrs: { href: "#" },
+                    on: { click: _vm.fekspor }
+                  },
+                  [
+                    _vm._v("Ekspor Data "),
+                    _c("i", { staticClass: "fas fa-arrow-circle-right" })
+                  ]
+                )
+              ]
+            )
           ])
         ]),
         _vm._v(" "),
@@ -63980,7 +64390,7 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "card-body p-0" }, [
               _c("table", { staticClass: "table table-condensed" }, [
-                _vm._m(2),
+                _vm._m(3),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -64066,6 +64476,12 @@ var staticRenderFns = [
         ])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h3", [_c("sup", { staticStyle: { "font-size": "20px" } })])
   },
   function() {
     var _vm = this
