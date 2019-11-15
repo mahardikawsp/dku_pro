@@ -23,13 +23,6 @@
               <div class="card-header">
                  <button class="btn btn-success" @click="newModal" >Tambah Baru  <i class="fas fa-plus fa-fw"></i></button>
                 <div class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                    <div class="input-group-append">
-                      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                    </div>
-                  </div>
                 </div>
               </div>
               <!-- /.card-header -->
@@ -195,6 +188,16 @@
             }
         },
         created() {
+            Fire.$on('searching',() => {
+              let query = this.$parent.search; //take root from app.js search
+              axios.get('api/findPosition?q=' + query)
+              .then((data) => {
+                this.positions = data.data;
+              })
+              .catch(() => {
+
+              })
+            })
             this.loadPositions();
             Fire.$on('afterCreate',() => {
               this.loadPositions();

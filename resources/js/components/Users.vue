@@ -22,15 +22,7 @@
                 <div class="card">
               <div class="card-header">
                 <button class="btn btn-success" @click="newModal" >Tambah Baru  <i class="fas fa-user-plus fa-fw"></i></button>
-                <div class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                    <div class="input-group-append">
-                      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
@@ -73,7 +65,9 @@
                 </table>
               </div>
               <div class="card-footer">
-                <pagination :data="users" @pagination-change-page="getResults"></pagination>
+                <pagination :data="users" @pagination-change-page="getResults"> 
+                    <span slot="prev-nav"> Previous</span>
+	                  <span slot="next-nav">Next</span> </pagination>
               </div>
               <!-- /.card-body -->
             </div>
@@ -88,7 +82,7 @@
         <!-- Button trigger modal -->
         <!-- Modal -->
         <div class="modal" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" v-show = "!editmode" id="exampleModalLabel">Tambah Data</h5>
@@ -99,37 +93,42 @@
             </div>
             <form @submit.prevent="editmode ? updateUser() : createUser()">
             <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form row">
+                    <div class="form-group col-md-6">
                     <label>Email</label>
-                    <input v-model="form.email" type="email" name="email" placeholder="Email"
+                    <input v-model="form.email" required="" type="email" name="email" placeholder="Email"
                         class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
                     <has-error :form="form" field="email"></has-error>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                     <label>Nama</label>
-                    <input v-model="form.name" type="text" name="name" placeholder="Nama"
+                    <input v-model="form.name" required="" type="text" name="name" placeholder="Nama"
                         class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
                     <has-error :form="form" field="name"></has-error>
                     </div>
+                    </div>
 
-                    <div class="form-group">
+                    <div class="form row">
+                    <div class="form-group col-md-6">
                     <label>Password</label>
                     <input v-model="form.password" type="password" name="password" placeholder="Password"
                         class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
                     <has-error :form="form" field="password"></has-error>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                     <label>Nomor HP</label>
-                    <input v-model="form.no_hp" type="text" name="no_hp" placeholder="Nomor HP"
+                    <input v-model="form.no_hp" required="" type="text" name="no_hp" placeholder="Nomor HP"
                         class="form-control" :class="{ 'is-invalid': form.errors.has('no_hp') }">
                     <has-error :form="form" field="no_hp"></has-error>
                     </div>
+                    </div>
 
-                    <div class="form-group">
+                    <div class="form row">
+                    <div class="form-group col-md-6">
                     <label>Lokasi</label>
-                        <select name="id_location" id="id_location" v-model="form.id_location" class="form-control" :class="{'is-invalid': form.errors.has('id_location')}">
+                        <select name="id_location" required="" id="id_location" v-model="form.id_location" class="form-control" :class="{'is-invalid': form.errors.has('id_location')}">
                             <option value="">Pilih Lokasi</option>
                            <option v-for="location in locations" :value="location.id_location" :key="location.value"> 
                                {{ location.location }}
@@ -138,9 +137,9 @@
                         <has-error :form="form" field="id_location"></has-error>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                     <label>Jabatan</label>
-                    <select name="id_position" id="id_position" v-model="form.id_position" class="form-control" :class="{'is-invalid': form.errors.has('id_position')}">
+                    <select name="id_position" required="" id="id_position" v-model="form.id_position" class="form-control" :class="{'is-invalid': form.errors.has('id_position')}">
                             <option value="">Pilih Jabatan</option>
                            <option v-for="position in positions" :value="position.id_position" :key="position.value"> 
                                {{ position.position }}
@@ -148,10 +147,13 @@
                         </select>
                     <has-error :form="form" field="id_position"></has-error>
                     </div>
+                    </div>
 
-                    <div class="form-group">
+
+                    <div class="form row">
+                    <div class="form-group col-md-6">
                     <label>Leader</label>
-                    <select name="id_leader" id="id_leader" v-model="form.id_leader" class="form-control" :class="{'is-invalid': form.errors.has('id_leader')}">
+                    <select name="id_leader" required="" id="id_leader" v-model="form.id_leader" class="form-control" :class="{'is-invalid': form.errors.has('id_leader')}">
                             <option value="">Pilih Leader</option>
                            <option v-for="leader in leaders" :value="leader.id_leader" :key="leader.value"> 
                                {{ leader.name }} || {{ leader.type }}
@@ -160,21 +162,36 @@
                     <has-error :form="form" field="id_leader"></has-error>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                     <label>Imei HP</label>
                     <input v-model="form.imei" type="text" name="imei" placeholder="imei"
                         class="form-control" :class="{ 'is-invalid': form.errors.has('imei') }">
                     <has-error :form="form" field="imei"></has-error>
                     </div>
+                    </div>
 
-                    <div class="form-group">
+                    <div class="form row">
+                    <div class="form-group col-md-6">
+                    <label>Jam Kerja</label>
+                        <select name="id_jamker" required="" id="id_jamker" v-model="form.id_jamker" class="form-control" :class="{'is-invalid': form.errors.has('id_jamker')}">
+                            <option value="">Pilih Jam Kerja</option>
+                           <option v-for="jamker in jamkers" :value="jamker.id_jamker" :key="jamker.value"> 
+                               {{ jamker.start }} - {{ jamker.end }}
+                               </option>
+                        </select>
+                        <has-error :form="form" field="id_jamker"></has-error>
+                    </div>
+
+                    <div class="form-group col-md-6">
                     <label>Status</label>
                         <select name="tipe" id="tipe" v-model="form.tipe" class="form-control" :class="{'is-invalid': form.errors.has('tipe')}">
                             <option value="">Status</option>
                             <option value="Aktif">Aktif</option>
                             <option value="Nonaktif">Nonaktif</option>
+                            <option value="Resign">Resign</option>
                         </select>
                         <has-error :form="form" field="tipe"></has-error>
+                    </div>
                     </div>
             </div>
             <div class="modal-footer">
@@ -198,7 +215,8 @@
                 users     : {},
                 positions : {},
                 locations : {},
-                leaders    : {},
+                leaders   : {},
+                jamkers   : {},
                 form: new Form({
                         id          : '',
                         name        : '',
@@ -207,6 +225,7 @@
                         no_hp       : '',
                         id_location : '',
                         id_position : '',
+                        id_jamker   : '',
                         photo       : '',
                         id_leader   : '',
                         tipe      : '',
@@ -266,6 +285,9 @@
             loadLocation(){
                 axios.get('api/location').then(response => this.locations = response.data)
             },
+            loadJamker(){
+                axios.get('api/jamker').then(response => this.jamkers = response.data)
+            },
             deleteUser(id){
                 swal.fire({
                   title: 'Yakin data dihapus?',
@@ -310,20 +332,21 @@
             }
         },
         created() {
-          Fire.$on('searching',() => {
-            let query = this.$parent.search; //take root from app.js search
-            axios.get('api/findUser?q=' + query)
-            .then((data) => {
-              this.users = data.data;
-            })
-            .catch(() => {
+            Fire.$on('searching',() => {
+              let query = this.$parent.search; //take root from app.js search
+              axios.get('api/findUser?q=' + query)
+              .then((data) => {
+                this.users = data.data;
+              })
+              .catch(() => {
 
+              })
             })
-          })
             this.loadUsers();
             this.loadPosition();
             this.loadLocation();
             this.loadLeader();
+            this.loadJamker();
             Fire.$on('afterCreate',() => {
               this.loadUsers();
             });

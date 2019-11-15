@@ -65,16 +65,16 @@ class ReasonController extends Controller
             $data = $ijin;
             Check_out::create([
                 'time_out'     => $request['date_created'],
-                'lat'         => '0',
-                'long'        => '0',
+                'lat'         =>  $request['lat'],
+                'long'        =>  $request['long'],
                 'id_status'   => '4',
                 'keterangan'  => 'ijin',
                 'id_user'     => $request['id_user']
             ]);
             Check_ins::create([
                 'time_in'     => $request['date_created'],
-                'lat'         => '0',
-                'long'        => '0',
+                'lat'         =>  $request['lat'],
+                'long'        =>  $request['long'],
                 'id_status'   => '4',
                 'keterangan'  => 'ijin',
                 'id_user'     => $request['id_user']

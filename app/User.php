@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','no_hp','id_location','id_leader','id_position','tipe','photo','imei'
+        'name', 'email', 'password','no_hp','id_location','id_leader','id_position','tipe','photo','imei','id_jamker'
     ];
 
     /**
@@ -43,7 +43,7 @@ class User extends Authenticatable
         return $user = DB::table('users')
             ->leftJoin('positions', 'users.id_position', '=', 'positions.id_position')
             ->leftJoin('locations','users.id_location', '=', 'locations.id_location')
-            // ->select('users.*', 'contacts.phone', 'orders.price')
-            ->paginate(5);
+            ->leftJoin('jamkers','users.id_jamker','=','jamkers.id_jamker')
+            ->paginate(10);
     }
 }

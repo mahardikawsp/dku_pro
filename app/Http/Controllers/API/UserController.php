@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image as Image;
 use Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -48,6 +49,7 @@ class UserController extends Controller
             'no_hp'         => 'required|string|min:11',
             'id_location'   => 'required',
             'id_position'   => 'required',
+            'id_jamker'     => 'required',
             'tipe'        => 'required',
         ]);
         return User::create([
@@ -58,6 +60,7 @@ class UserController extends Controller
             'id_location' => $request['id_location'],
             'id_leader'   => $request['id_leader'],
             'id_position' => $request['id_position'],
+            'id_jamker'   => $request['id_jamker'],
             'tipe'      => $request['tipe']
         ]);
     }
@@ -145,6 +148,7 @@ class UserController extends Controller
             'id_location' => $request['id_location'],
             'id_leader'   => $request['id_leader'],
             'id_position' => $request['id_position'],
+            'id_jamker'   => $request['id_jamker'],
             'imei'        => $request['imei'],
             'tipe'      => $request['tipe']
         ]);
@@ -167,11 +171,13 @@ class UserController extends Controller
 
     public function search(){
         if($search = \Request::get('q')){
-            $users = User::where(function($query) use ($search){
-                $query->where('name','LIKE', "%$search%")->orWhere('email','LIKE',"%$search%");
-            })->paginate(10);
+            $users = DB::table('users')
+            ->leftJoin('positions', 'users.id_position', '=', 'positions.id_position')
+            ->leftJoin('locations','users.id_location', '=', 'locations.id_location')
+            ->leftJoin('jamkers','users.id_jamker','=','jamkers.id_jamker')
+            ->where('users.name','LIKE','%'.$search.'%')->paginate(10);
         } else {
-            $users = User::latest()->paginate(5);
+            $users = User::latest()->paginate(10);
         }
         return $users;
     }

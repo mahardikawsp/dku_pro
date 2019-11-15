@@ -3,108 +3,105 @@
 
 use Carbon\Carbon;
 
-function getDay($tgl)
-{
-    switch ($tgl){
+    function getDay($tgl)
+    {
+        switch ($tgl){
 
-        case 1: 
+            case 1: 
 
-            return "Januari";
+                return "Januari";
 
-            break;
+                break;
 
-        case 2:
+            case 2:
 
-            return "Februari";
+                return "Februari";
 
-            break;
+                break;
 
-        case 3:
+            case 3:
 
-            return "Maret";
+                return "Maret";
 
-            break;
+                break;
 
-        case 4:
+            case 4:
 
-            return "April";
+                return "April";
 
-            break;
+                break;
 
-        case 5:
+            case 5:
 
-            return "Mei";
+                return "Mei";
 
-            break;
+                break;
 
-        case 6:
+            case 6:
 
-            return "Juni";
+                return "Juni";
 
-            break;
+                break;
 
-        case 7:
+            case 7:
 
-            return "Juli";
+                return "Juli";
 
-            break;
+                break;
 
-        case 8:
+            case 8:
 
-            return "Agustus";
+                return "Agustus";
 
-            break;
+                break;
 
-        case 9:
+            case 9:
 
-            return "September";
+                return "September";
 
-            break;
+                break;
 
-        case 10:
+            case 10:
 
-            return "Oktober";
+                return "Oktober";
 
-            break;
+                break;
 
-        case 11:
+            case 11:
 
-            return "November";
+                return "November";
 
-            break;
+                break;
 
-        case 12:
+            case 12:
 
-            return "Desember";
+                return "Desember";
 
-            break;
+                break;
 
-}
-}
+    }
+    }
 
-function getHours($jam){
-    $dt = new Carbon($jam);
-    return $dt->format('H:i:s');
-}
+    function getHours($jam){
+        $dt = new Carbon($jam);
+        return $dt->format('H:i:s');
+    }
 
-function toHours($jam){
-    $hours = floor($jam / 60);
-    $min = $jam - ($hours * 60);
-    return $hours.":".$min." "."menit";
-}
+    function toHours($minutes){
+        if($minutes <= 0) { 
+            return '00 Jam 00 Menit';
+        }else {    
+            return sprintf("%02d",floor($minutes / 60)).' Jam '.sprintf("%02d",str_pad(($minutes % 60), 2, "0", STR_PAD_LEFT)). " Menit";
+        }
+    }
 
-// class Helper
-// {
-// 	public static function keIndonesia($tgl)
-// 	{
-// 		$dt = new Carbon($tgl);
-// 		setlocale(LC_TIME, 'IND');
-		
-// 		return $dt->formatLocalized('%d %B %Y %H:%M:%S');
-//     } 
-    // public static function day($tgl)
-    // {
-    //     $dt = new Carbon($tgl);
-    //     return $dt->day;
-    // }
-// }
+    function acc($string)
+    {
+        if($string == 0) {
+            return "Menunggu Persetujuan";
+        } elseif ($string == 1){
+            return "Terima";
+        } elseif ($string == 2){
+            return "Ditolak";
+        }
+    }

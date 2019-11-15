@@ -122,6 +122,19 @@
         <?php else :?>
         <td align="left" valign=bottom><b><font color="#000000">  </font></b></td>
         <?php endif;?>
+        <?php $getNoket = DB::table('reasons')
+                 ->select(DB::raw('COUNT(id_reason) as noacc'))
+                 ->where('id_user', '=', ''. $row['id'] .'' )
+                 ->where(DB::raw('MONTH(date_created)'),'=',$month)
+                 ->where(DB::raw('YEAR(date_created)'),'=',$year)->get();
+        ?>
+        <?php if($getNoket): ?>
+        @foreach($getNoket as $total)
+            <td align="left" valign=bottom><b><font color="#000000">{{ $total->noacc }}  </font></b></td>
+        @endforeach
+        <?php else :?>
+        <td align="left" valign=bottom><b><font color="#000000">  </font></b></td>
+        <?php endif;?>
 	</tr>
     
     @endforeach

@@ -99,4 +99,5 @@ class LocationController extends Controller
         $location = Location::where('id_location', '=', $id)->delete();
         return ['message' => 'terhapus'];
     }
+    
 }

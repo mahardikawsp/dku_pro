@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Jamker;
 use Illuminate\Http\Request;
-Use App\Position;
 use App\Http\Controllers\Controller;
 
-class PositionController extends Controller
+class JamkerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,17 @@ class PositionController extends Controller
      */
     public function index()
     {
-        return Position::all();
+        return Jamker::all();
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -27,20 +37,33 @@ class PositionController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'position'    => 'required|string|max:50'
+            'start'       => 'required|string|max:191',
+            'end'         => 'required|string|max:191'
         ]);
-        return Position::create([
-            'position'        => $request['position']
+        return Jamker::create([
+            'start'      => $request['start'],
+            'end'        => $request['end']
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Jamker  $jamker
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Jamker $jamker)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Jamker  $jamker
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Jamker $jamker)
     {
         //
     }
@@ -49,38 +72,28 @@ class PositionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Jamker  $jamker
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'position'    => 'required|string|max:50'
+            'start'       => 'required|string|max:191',
+            'end'         => 'required|string|max:191'
         ]);
-        $jabatan = Position::where('id_position', '=', $id)->update($request->all());
+        $jamker = Jamker::where('id_jamker', '=', $id)->update($request->all());
         return ['message' => 'Update berhasil'];
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Jamker  $jamker
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $jabatan = Position::where('id_position', '=', $id)->delete();
+        $jamker = Jamker::where('id_jamker', '=', $id)->delete();
         return ['message' => 'terhapus'];
-    }
-
-    public function search(){
-        if($search = \Request::get('q')){
-            $position = Position::where(function($query) use ($search){
-                $query->where('position','LIKE', "%$search%");
-            })->get();
-        } else {
-            $position = Position::all();
-        }
-        return $position;
     }
 }

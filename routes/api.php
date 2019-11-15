@@ -24,10 +24,16 @@ Route::apiResources(['user'    => 'API\UserController',
                     'status'   => 'API\StatusController',
                     'absent'   => 'API\AbsentController',
                     'sellthrough' => 'API\SellthroughController',
-                    'outlet'   => 'API\OutletController']);
+                    'outlet'   => 'API\OutletController',
+                    'jamker'   => 'API\JamkerController',
+                    'ijin'     => 'API\ReasonController']);
                     
 Route::get('profile','API\UserController@profile');
+
 Route::get('findUser','API\UserController@search');
+Route::get('findUserIjin','API\ReasonController@search');
+Route::get('findPosition','API\PositionController@search');
+
 Route::get('uabsent','API\AbsentController@uabsent');
 Route::put('profile','API\UserController@updateProfile');
 

@@ -50,9 +50,9 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+      <!-- <li class="nav-item d-none d-sm-inline-block">
         <a href="index3.html" class="nav-link">Home</a>
-      </li>
+      </li> -->
       <!-- <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
       </li> -->
@@ -184,18 +184,41 @@
                   <p>Status</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <router-link to="/jamker" class="nav-link">
+                  <i class="fas fas fa-user-clock nav-icon"></i>
+                  <p>Jam Kerja</p>
+                </a>
+              </li>
             </ul>
           </li>
           @endcan
-          
-          <li class="nav-item">
-            <router-link to="/absensi" class="nav-link">
-              <i class="nav-icon fas fa-user-check"></i>
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="fas fas fa-user-check nav-icon"></i>
               <p>
-                Data Absensi
+               Absensi
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
-            </li>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="/absensi" class="nav-link">
+                  <i class="fas fas fa-user-check nav-icon"></i>
+                  <p>Data Absensi</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <router-link to="/ijin" class="nav-link">
+                  <i class="fas fas fa-user-check nav-icon"></i>
+                  <p>Data Ijin</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          
+  
 
             <li class="nav-item has-treeview">
             <a href="#" class="nav-link">

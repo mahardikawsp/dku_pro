@@ -53,7 +53,9 @@ let routes = [
     { path: '/dev', component: require('./components/Developer.vue').default },
     { path: '/sellorder', component: require('./components/Sellorder.vue').default },
     { path: '/outlets', component: require('./components/Outlets.vue').default },
-    { path: '/disota', component: require('./components/Disota.vue').default }
+    { path: '/disota', component: require('./components/Disota.vue').default },
+    { path: '/jamker', component: require('./components/Jamker.vue').default },
+    { path: '/ijin', component: require('./components/Ijin.vue').default }
   ]
 
   const router = new VueRouter({
@@ -66,8 +68,23 @@ Vue.filter('upText',function( text){
     return text.toUpperCase();
 });
 
+Vue.filter('acc',function( text){
+  switch(text){
+  case "0":
+    return "Menunggu Persetujuan";
+  case "1":
+    return "Diterima";
+  case "2":
+    return "Ditolak";
+  }
+});
+
 Vue.filter('tgl_indo',function(created){
     return moment(created).format('LL');
+})
+
+Vue.filter('tanggal',function(created){
+  return moment(created).format('LLLL');
 })
 
 Vue.filter('jam',function(created){
