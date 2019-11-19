@@ -55,7 +55,9 @@ let routes = [
     { path: '/outlets', component: require('./components/Outlets.vue').default },
     { path: '/disota', component: require('./components/Disota.vue').default },
     { path: '/jamker', component: require('./components/Jamker.vue').default },
-    { path: '/ijin', component: require('./components/Ijin.vue').default }
+    { path: '/ijin', component: require('./components/Ijin.vue').default },
+    { path: '/canvaser', component: require('./components/Canvaser.vue').default },
+    { path: '/filtersell', component: require('./components/Filtersell.vue').default },
   ]
 
   const router = new VueRouter({

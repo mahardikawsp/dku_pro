@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Canvasser;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image as Image;
 use Validator;
@@ -52,6 +53,16 @@ class UserController extends Controller
             'id_jamker'     => 'required',
             'tipe'        => 'required',
         ]);
+        
+        if($request['id_canvas']){
+            $canvasser = $request['id_canvas'];
+            $findCanvas = Canvasser::findOrFail($request['id_canvas']);
+            $findCanvas->update([
+                'aktif' => 'ya'
+            ]);
+        } else{
+            $canvasser = 0;
+        }
         return User::create([
             'name'        => $request['name'],
             'email'       => $request['email'],
@@ -61,7 +72,9 @@ class UserController extends Controller
             'id_leader'   => $request['id_leader'],
             'id_position' => $request['id_position'],
             'id_jamker'   => $request['id_jamker'],
-            'tipe'      => $request['tipe']
+            'tipe'        => $request['tipe'],
+            'id_canvas'   => $canvasser,
+            'created_at'  => $request['created_at']
         ]);
     }
 
@@ -139,6 +152,16 @@ class UserController extends Controller
             'email'         => 'required|string|email|max:191|unique:users,email,'.$user->id,
             'password'      => 'sometimes|string|min:6'
         ]);
+        
+        if($request['id_canvas']){
+            $canvasser = $request['id_canvas'];
+            $findCanvas = Canvasser::findOrFail($request['id_canvas']);
+            $findCanvas->update([
+                'aktif' => 'ya'
+            ]);
+        } else{
+            $canvasser = 0;
+        }
 
         $user->update([
             'name'        => $request['name'],
@@ -150,7 +173,10 @@ class UserController extends Controller
             'id_position' => $request['id_position'],
             'id_jamker'   => $request['id_jamker'],
             'imei'        => $request['imei'],
-            'tipe'      => $request['tipe']
+            'tipe'        => $request['tipe'],
+            'id_canvas'   => $canvasser,
+            'created_at'  => $request['created_at'],
+            'resign_at'   => $request['resign_at']
         ]);
         return ['message' => 'Update berhasil'];
     }

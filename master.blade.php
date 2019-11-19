@@ -161,12 +161,6 @@
                 </a>
               </li>
               <li class="nav-item">
-                <router-link to="/canvaser" class="nav-link">
-                  <i class="fas fa-user-secret nav-icon"></i>
-                  <p>Canvasser</p>
-                </a>
-              </li>
-              <li class="nav-item">
                 <router-link to="/jabatan" class="nav-link">
                   <i class="fas fa-user-tag nav-icon"></i>
                   <p>Jabatan</p>
@@ -265,32 +259,6 @@
                 <router-link to="/disota" class="nav-link">
                   <i class="fas fa-database nav-icon"></i>
                   <p>Distr OTA Vo Fisik Sell Perdn</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item has-treeview">
-            <a href="" class="nav-link">
-              <i class="nav-icon fas fa-sort-amount-up"></i>
-              <p>
-               Filter Penjualan
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <router-link to="/filtersell" class="nav-link">
-                  <i class="fas fa-user-friends nav-icon"></i>
-                  <p>Order By Sales</p>
-                </a>
-              </li>
-            </ul>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <router-link to="/disota" class="nav-link">
-                  <i class="fas fa-store-alt nav-icon"></i>
-                  <p>Order By TDC</p>
                 </a>
               </li>
             </ul>

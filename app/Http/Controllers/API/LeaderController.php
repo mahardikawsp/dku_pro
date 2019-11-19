@@ -91,7 +91,7 @@ class LeaderController extends Controller
      * @param  \App\Leader  $leader
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Leader $leader)
+    public function destroy(Leader $id)
     {
         $leader = Leader::where('id_leader', '=', $id)->delete();
         return ['message' => 'terhapus'];

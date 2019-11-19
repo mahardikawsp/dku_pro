@@ -31,7 +31,7 @@ class Absent extends Model
             left join check_outs c on date(b.time_in) = date(c.time_out) 
             left join statuss d on b.id_status = d.id_status 
             left join locations f on a.id_location = f.id_location
-            left join statuss e on c.id_status = e.id_status GROUP BY b.time_in")
+            left join statuss e on c.id_status = e.id_status WHERE DATE(b.time_in) = DATE(c.time_out) GROUP BY b.time_in")
         );
         return $query;
     }

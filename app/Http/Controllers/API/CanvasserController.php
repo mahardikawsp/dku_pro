@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Sellorder;
-use App\Jobs\ImportSellorder;
-use App\imports\SellorderImport;
-use Illuminate\Support\Collection;
+use App\Canvasser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class SellorderController extends Controller
+class CanvasserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +15,7 @@ class SellorderController extends Controller
      */
     public function index()
     {
-        return Sellorder::getAll();
+        return Canvasser::all();
     }
 
     /**
@@ -28,7 +25,7 @@ class SellorderController extends Controller
      */
     public function create()
     {
-        
+        //
     }
 
     /**
@@ -39,29 +36,23 @@ class SellorderController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'file' => 'required|mimes:xls,xlsx'
+        $this->validate($request,[
+            'id_canvasser'          => 'required|string|max:50',
+            'aktif'                => 'required'
         ]);
-
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs(
-                'public', $filename
-            );
-            ImportSellorder::dispatch($filename);
-            return response()->json(['Upload Success']);
-        }  
-        return response()->json(['Upload Gagal']);
+        return Canvasser::create([
+            'id_canvasser'        => $request['id_canvasser'],
+            'aktif'              => $request['aktif']
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Sellorder  $sellorder
+     * @param  \App\Canvasser  $canvasser
      * @return \Illuminate\Http\Response
      */
-    public function show(Sellorder $sellorder)
+    public function show(Canvasser $canvasser)
     {
         //
     }
@@ -69,10 +60,10 @@ class SellorderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Sellorder  $sellorder
+     * @param  \App\Canvasser  $canvasser
      * @return \Illuminate\Http\Response
      */
-    public function edit(Sellorder $sellorder)
+    public function edit(Canvasser $canvasser)
     {
         //
     }
@@ -81,22 +72,28 @@ class SellorderController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Sellorder  $sellorder
+     * @param  \App\Canvasser  $canvasser
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Sellorder $sellorder)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'id_canvasser'        => 'required|string|max:50',
+            'aktif'              => 'required'
+        ]);
+        $canvaser = Canvasser::where('id_canvas', '=', $id)->update($request->all());
+        return ['message' => 'Update berhasil'];
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Sellorder  $sellorder
+     * @param  \App\Canvasser  $canvasser
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sellorder $sellorder)
+    public function destroy($id)
     {
-        //
+        $canvaser = Canvasser::where('id_canvas', '=', $id)->delete();
+        return ['message' => 'terhapus'];
     }
 }

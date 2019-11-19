@@ -30,17 +30,21 @@ class SellorderImport implements OnEachRow,WithStartRow
             ['rs' => $row[0]],
             [
                 'rs'      => $row[0],
-                'tanggal' => $this->transformDate($row[1]),
-                '1k'      => $row[2],
-                '5k'      => $row[3],  	  	  	  	  	  	  	
-                '10k'     => $row[4],
-                '20k'     => $row[5],
-                '25k'     => $row[6],
-                '50k'     => $row[7],
-                '100k'    => $row[8],
-                'vbulk'   => $row[9],
-                'total'   => $row[10],
-                'value'   => $row[11]
+                'level'   => $row[1],
+                'status'  => $row[2],
+                'lcycle'  => $row[3],
+                'id_canvasser' => $row[4],
+                'tanggal' => $this->transformDate($row[5]),
+                '1k'      => $row[6],
+                '5k'      => $row[7],  	  	  	  	  	  	  	
+                '10k'     => $row[8],
+                '20k'     => $row[9],
+                '25k'     => $row[10],
+                '50k'     => $row[11],
+                '100k'    => $row[12],
+                'vbulk'   => $row[13],
+                'total'   => $row[14],
+                'value'   => $row[15]
             ]
 
         );
@@ -48,17 +52,21 @@ class SellorderImport implements OnEachRow,WithStartRow
         if (! $sellorder->wasRecentlyCreated) {
             $sellorder->update([
                 'rs'      => $row[0],
-                'tanggal' => $this->transformDate($row[1]),
-                '1k'      => $row[2],
-                '5k'      => $row[3],  	  	  	  	  	  	  	
-                '10k'     => $row[4],
-                '20k'     => $row[5],
-                '25k'     => $row[6],
-                '50k'     => $row[7],
-                '100k'    => $row[8],
-                'vbulk'   => $row[9],
-                'total'   => $row[10],
-                'value'   => $row[11]
+                'level'   => $row[1],
+                'status'  => $row[2],
+                'lcycle'  => $row[3],
+                'id_canvasser' => $row[4],
+                'tanggal' => $this->transformDate($row[5]),
+                '1k'      => $row[6],
+                '5k'      => $row[7],  	  	  	  	  	  	  	
+                '10k'     => $row[8],
+                '20k'     => $row[9],
+                '25k'     => $row[10],
+                '50k'     => $row[11],
+                '100k'    => $row[12],
+                'vbulk'   => $row[13],
+                'total'   => $row[14],
+                'value'   => $row[15]
             ]);
         }
     }

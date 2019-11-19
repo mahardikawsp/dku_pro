@@ -5,12 +5,12 @@
       <div class="container-fluid">
         <div class="row mb-2" style="">
           <div class="col-sm-6">
-            <h1>Data Master Outlets</h1>
+            <h1>Data Sellorder</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Data Master Outlets</li>
+              <li class="breadcrumb-item active">Data Sellorder</li>
             </ol>
           </div>
         </div>
@@ -22,7 +22,7 @@
                 <div class="card">
               <div class="card-header">
                 <button class="btn btn-success" @click="newModal" >Upload Data  <i class="fas fa-plus fa-fw"></i></button>
-                <button class="btn btn-info" @click="editData" >Perbarui Data  <i class="fas fa-plus fa-fw"></i></button>
+                <!-- <button class="btn btn-info" @click="editData" >Perbarui Data  <i class="fas fa-plus fa-fw"></i></button> -->
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
                     <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
@@ -39,24 +39,28 @@
                   <thead>
                     <tr>
                       <th>RS</th>
-                      <th>Nama Outlet</th>
-                      <th>Lokasi</th>
+                      <th>Canvasser</th>
+                      <th>Tanggal</th>
+                      <th>VBULK</th>
+                      <th>TOTAL</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="outlet in outlets.data" :key="outlet.id">
-                      <td> {{ outlet.rs }}</td>
-                      <td>{{ outlet.namaoutlet }}</td>
-                      <td>{{ outlet.kotakab }} | {{ outlet.kecamatan }}</td>
+                    <tr v-for="sellorder in sellorders.data" :key="sellorder.id">
+                      <td>{{ sellorder.rs }}</td>
+                      <td>{{ sellorder.id_canvasser }}</td>
+                      <td>{{ sellorder.tanggal | tgl_indo }} </td>
+                      <td>{{ sellorder.vbulk }}</td>
+                      <td>{{ sellorder.total }}</td>
                       <td>
-                          <a href="#" @click="editModal(leader)">
+                          <a href="#" @click="editModal(sellorder)">
                               <span class="badge bg-primary">
                                 Edit
                                  <i class="fas fa-edit"> </i>
                               </span>
                           </a>
-                          <a href="#" @click="deleteLeader(leader.id_leader)">
+                          <a href="#" @click="deleteSellorder(sellorder.id_sellorder)">
                               <span class="badge bg-danger">
                                 Hapus <i class="fas fa-trash"></i>
                               </span>
@@ -67,7 +71,7 @@
                 </table>
               </div>
               <div class="card-footer">
-                <pagination :data="outlets" @pagination-change-page="getResults"></pagination>
+                <pagination :data="sellorders" @pagination-change-page="getResults"></pagination>
               </div>
               <!-- /.card-body -->
             </div>
@@ -122,7 +126,7 @@
         data(){
             return {
                 editmode : false, //for modal
-                outlets : {},
+                sellorders : {},
                 progressBar: 0,
                 message: '',
                 isLoading: false,
@@ -137,7 +141,7 @@
         },
         methods : {
             getResults(page = 1){
-              axios.get('api/outlet?page=' +page)
+              axios.get('api/sellorder?page=' +page)
               .then(response => {
                 this.outlets = response.data;
               });
@@ -242,9 +246,9 @@
               $('#addModal').modal('show');
               this.form.fill(leader);
             },
-            loadOutlet(){
+            loadSellorder(){
                 this.$Progress.start();
-                axios.get('api/outlet').then(response => this.outlets = response.data)
+                axios.get('api/sellorder').then(response => this.sellorders = response.data)
                 this.$Progress.finish();
             },
             deleteLeader(id){
@@ -295,9 +299,9 @@
             }
         },
         created() {
-            this.loadOutlet();
+            this.loadSellorder();
             Fire.$on('afterCreate',() => {
-              this.loadOutlet();
+              this.loadSellorder();
             });
             // setInterval(() => this.loadleaders(),3000);
         }

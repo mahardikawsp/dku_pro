@@ -32,13 +32,12 @@
                 <option value="">Filter Berdasarkan</option>
                 <option value="A">Filter Tanggal</option>
                 <option value="B">Filter Bulan</option>
-                <option value="C">Filter Tahun</option>
                 <option value="D">Filter Lokasi</option>
                 <option value="E">Filter Status</option>
                 </select>
                 <p></p>
-                <input v-model="form['date']" v-show="shouldDisplay('A')" type="date" name="date" class="form-control">
-                <select v-model="form['month']" v-show="shouldDisplay('B')" class="form-control" name="month" id="filter">
+                <input v-model="form['date']" v-show="shouldDisplay('A')" type="date" name="date" id="date" class="form-control">
+                <select v-on:click = "resetDate" v-model="form['month']" v-show="shouldDisplay('B')" class="form-control" id="month" name="month">
                 <option value="">Filter Berdasar Bulan</option>
                 <option value="1">Januari</option>
                 <option value="2">Februari</option>
@@ -53,28 +52,38 @@
                 <option value="11">November</option>
                 <option value="12">Desember</option>
                 </select>
-                <select v-model="form['year']" v-show="shouldDisplay('C')" class="form-control" name="year" id="filter">
+                <br v-show="shouldDisplay('B')">
+                <select v-model="form['year']" v-show="shouldDisplay('B')" class="form-control" name="year" id="filter">
                 <option value="">Filter Berdasar Tahun</option>
-                <option value="1">2019</option>
-                <option value="2">2020</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
                 </select>
-                <select v-model="form['location']" v-show="shouldDisplay('D')" class="form-control" name="location" id="filter">
+                <select v-model="location" v-show="shouldDisplay('D')" class="form-control" name="location" id="filter">
                 <option value="">Filter Berdasar Lokasi</option>
                  <option v-for="location in locations" :value="location.id_location" :key="location.value"> 
                                {{ location.location }}
                                </option>
                 </select>
                <p></p>
-              <select v-model="form['userpoast']" v-on:click ="fuser" class="form-control" name="id_user" id="filter">
+              <!-- <select v-model="form['userpoast']" v-on:click ="fuser" class="form-control" name="id_user" id="filter">
+                <option value="">Filter User</option>
+                <option v-for="user in users" :value="user.id" :key="user.value"> 
+                               {{ user.name }}
+                               </option>
+              </select> -->
+
+              <select v-model="form['userpoast']" class="form-control" name="id_user" id="filter">
                 <option value="">Filter User</option>
                 <option v-for="user in users" :value="user.id" :key="user.value"> 
                                {{ user.name }}
                                </option>
               </select>
+
+
               </div>
               
               
-              <a v-on:click = "fcomplete" href="#" class="small-box-footer">Tampilkan Data <i class="fas fa-arrow-circle-right"></i></a>
+              <a v-on:click = "fcomplete" href="" class="small-box-footer">Tampilkan Data <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -182,6 +191,11 @@
                 selectedValue1: '',
                 selectedValue11: '',
                 form : {},
+                date : '',
+                year : '',
+                month : '',
+                userpoast : '',
+                location : '',
                 tanggal1 : '',
                 bulan1 : '',
                 tahun1 : '',
@@ -235,7 +249,21 @@
               })
             },
             fcomplete(){
-              console.info(this.form)
+              
+              axios.get('api/findAbsent?tanggal=' +this.form.date+'&month='+this.form.month+'&year='+this.form.year+'&user='+this.form.userpoast)
+                .then((data) => {
+                  this.$Progress.start();
+                  this.absents = data.data;
+                  Fire.$emit('afterCreate');
+                  this.$Progress.finish();
+                  this.$data.reset();
+                  })
+              .catch(() => {
+                this.$Progress.fail();
+              })
+            },
+            resetDate(){
+             this.$data.reset();
             },
             fekspor(){
               window.open('/api/export?tanggal='+this.tanggal1+'&month='+this.bulan1+'&year='+this.tahun1+'&lokasi='+this.location1);

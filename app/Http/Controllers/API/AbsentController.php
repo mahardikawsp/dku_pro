@@ -50,7 +50,7 @@ class AbsentController extends Controller
             left join check_outs c on date(b.time_in) = date(c.time_out) 
             left join statuss d on b.id_status = d.id_status 
             left join locations f on a.id_location = f.id_location
-            left join statuss e on c.id_status = e.id_status WHERE a.id LIKE '%$search%' GROUP BY b.time_in")
+            left join statuss e on c.id_status = e.id_status WHERE DATE(b.time_in) = DATE(c.time_out) AND a.id LIKE '%$search%' GROUP BY b.time_in")
         );
         } else {
             $query = (new static)->paginateArray(
@@ -59,7 +59,7 @@ class AbsentController extends Controller
                 left join check_outs c on date(b.time_in) = date(c.time_out) 
                 left join statuss d on b.id_status = d.id_status 
                 left join locations f on a.id_location = f.id_location
-                left join statuss e on c.id_status = e.id_status GROUP BY b.time_in")
+                left join statuss e on c.id_status = e.id_status WHERE DATE(b.time_in) = DATE(c.time_out) AND GROUP BY b.time_in")
             );
         }
         return $query;
@@ -194,4 +194,56 @@ class AbsentController extends Controller
         //DAN NAMA FILE YANG DIHASILKAN ADALAH transaction.xlsx
         return Excel::download(new AbsentExport($absen, request()->month, request()->year), 'transaction.xlsx');
     }
+
+    public static function findabsent(){
+        $tanggal = \Request::get('tanggal');
+        $month   = \Request::get('month');
+        $year    = \Request::get('year');
+        $user    = \Request::get('user');
+        if($tanggal){
+            $query = (new static)->paginateForSearch(
+                DB::select("SELECT a.name,b.time_in,c.time_out,d.type as absen_masuk,e.type as absen_keluar, f.location 
+                from users a join check_ins b on a.id = b.id_user 
+                left join check_outs c on date(b.time_in) = date(c.time_out) 
+                left join statuss d on b.id_status = d.id_status 
+                left join locations f on a.id_location = f.id_location
+                left join statuss e on c.id_status = e.id_status WHERE DATE(b.time_in) = DATE(c.time_out) AND DATE(b.time_in) = '$tanggal' 
+                AND a.id LIKE '$user' GROUP BY b.time_in")
+            );
+        } elseif($month){
+            $query = (new static)->paginateForSearch(
+                DB::select("SELECT a.name,b.time_in,c.time_out,d.type as absen_masuk,e.type as absen_keluar, f.location 
+                from users a join check_ins b on a.id = b.id_user 
+                left join check_outs c on date(b.time_in) = date(c.time_out) 
+                left join statuss d on b.id_status = d.id_status 
+                left join locations f on a.id_location = f.id_location
+                left join statuss e on c.id_status = e.id_status WHERE DATE(b.time_in) = DATE(c.time_out) AND MONTH(b.time_in) = '$month'
+                AND YEAR(b.time_in) = '$year' 
+                AND a.id LIKE '$user' GROUP BY b.time_in")
+            );
+        } 
+        //elseif($month){
+        //     $query = (new static)->paginateArray(
+        //         DB::select("SELECT a.name,b.time_in,c.time_out,d.type as absen_masuk,e.type as absen_keluar, f.location 
+        //         from users a join check_ins b on a.id = b.id_user 
+        //         left join check_outs c on date(b.time_in) = date(c.time_out) 
+        //         left join statuss d on b.id_status = d.id_status 
+        //         left join locations f on a.id_location = f.id_location
+        //         left join statuss e on c.id_status = e.id_status WHERE DATE(b.time_in) = DATE(c.time_out) AND a.id LIKE '%$search%' GROUP BY b.time_in")
+        //     );
+        // }
+        return $query;
+    }
+
+    public function paginateForSearch($data, $perPage = 1000)
+    {
+        $page = Paginator::resolveCurrentPage();
+        $total = count($data);
+        $results = array_slice($data, ($page - 1) * $perPage, $perPage);
+
+        return new LengthAwarePaginator($results, $total, $perPage, $page, [
+            'path' => Paginator::resolveCurrentPath(),
+        ]);
+    }
+
 }

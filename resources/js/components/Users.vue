@@ -163,11 +163,15 @@
                     </div>
 
                     <div class="form-group col-md-6">
-                    <label>Imei HP</label>
-                    <input v-model="form.imei" type="text" name="imei" placeholder="imei"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('imei') }">
-                    <has-error :form="form" field="imei"></has-error>
-                    </div>
+                    <label>ID Canvasser</label>
+                    <select name="id_canvas" id="id_canvas" v-model="form.id_canvas" class="form-control" :class="{'is-invalid': form.errors.has('id_canvas')}">
+                            <option value="">Pilih ID Canvaser</option>
+                           <option v-for="canvaser in canvasers" :value="canvaser.id_canvas" :key="canvaser.value"> 
+                               {{ canvaser.id_canvasser }} 
+                               </option>
+                        </select>
+                    <has-error :form="form" field="id_canvas"></has-error>
+                    </div>    
                     </div>
 
                     <div class="form row">
@@ -186,11 +190,27 @@
                     <label>Status</label>
                         <select name="tipe" id="tipe" v-model="form.tipe" class="form-control" :class="{'is-invalid': form.errors.has('tipe')}">
                             <option value="">Status</option>
-                            <option value="Aktif">Aktif</option>
-                            <option value="Nonaktif">Nonaktif</option>
-                            <option value="Resign">Resign</option>
+                            <option value="aktif">Aktif</option>
+                            <option value="nonaktif">Nonaktif</option>
+                            <option value="resign">Resign</option>
                         </select>
                         <has-error :form="form" field="tipe"></has-error>
+                    </div>
+                    </div>
+
+                    <div class="form row">
+                    <div class="form-group col-md-6">
+                    <label>Mulai Bekerja</label>
+                    <input v-model="form.created_at" required="" type="text" name="created_at"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('created_at') }">
+                    <has-error :form="form" field="created_at"></has-error>
+                    </div>
+
+                    <div class="form-group col-md-6" v-if="form.tipe === 'resign'">
+                    <label>Tanggal Resign</label>
+                    <input v-model="form.resign_at" required="" type="text" name="resign_at"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('resign_at') }">
+                    <has-error :form="form" field="resign_at"></has-error>
                     </div>
                     </div>
             </div>
@@ -217,6 +237,7 @@
                 locations : {},
                 leaders   : {},
                 jamkers   : {},
+                canvasers : {},
                 form: new Form({
                         id          : '',
                         name        : '',
@@ -228,8 +249,10 @@
                         id_jamker   : '',
                         photo       : '',
                         id_leader   : '',
-                        tipe      : '',
-                        imei      : '',
+                        tipe        : '',
+                        imei        : '',
+                        created_at  : '',
+                        id_canvas   : ''
                 })
             }
         },
@@ -287,6 +310,9 @@
             },
             loadJamker(){
                 axios.get('api/jamker').then(response => this.jamkers = response.data)
+            },
+            loadCanvaser(){
+                axios.get('api/canvaser').then(response => this.canvasers = response.data)
             },
             deleteUser(id){
                 swal.fire({
@@ -347,6 +373,7 @@
             this.loadLocation();
             this.loadLeader();
             this.loadJamker();
+            this.loadCanvaser();
             Fire.$on('afterCreate',() => {
               this.loadUsers();
             });
